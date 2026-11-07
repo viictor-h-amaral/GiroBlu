@@ -11,14 +11,14 @@ Projeto acadêmico desenvolvido para a disciplina de **Programação Orientada a
 | Desenvolvedor | Função / Foco principal | GitHub |
 | :--- | :--- | :--- |
 | **Victor** | Backend / Arquitetura Base / Code Review | [@viictor-h-amaral](https://github.com/viictor-h-amaral) |
-| **Camila** | Backend / Domínio / Testes Unitários & UI | [Perfil da Camila] |
+| **Camila** | Backend / Domínio / Testes Unitários & UI | [@camila-warmeling](https://github.com/camila-warmeling) |
 
 ---
 
 ## 🚀 Tecnologias e Conceitos Utilizados
 
 * **Linguagem:** Java 17+
-* **Interface Gráfica:** *a definir*
+* **Interface Gráfica:** Java Swing (Arquitetura em duas camadas desassociada da camada de negócio)
 * **Persistência de Dados:** Arquivos locais (CSV / Binário)
 * **Testes Automatizados:** JUnit 6
 * **Conceitos POO:**
