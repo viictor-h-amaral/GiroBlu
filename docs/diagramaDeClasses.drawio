@@ -270,10 +270,10 @@
         <mxCell id="jZddg3LLGUw6Sl3sUHVl-147" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;i&gt;+ &lt;/i&gt;validarLiberarParaViagem(): void" vertex="1">
           <mxGeometry height="26" width="360" y="129" as="geometry" />
         </mxCell>
-        <mxCell id="jZddg3LLGUw6Sl3sUHVl-141" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ liberarParaViagem(): boolean" vertex="1">
+        <mxCell id="jZddg3LLGUw6Sl3sUHVl-141" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ liberarParaViagem(): void" vertex="1">
           <mxGeometry height="26" width="360" y="155" as="geometry" />
         </mxCell>
-        <mxCell id="jZddg3LLGUw6Sl3sUHVl-143" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ finalizarViagem(): boolean" vertex="1">
+        <mxCell id="jZddg3LLGUw6Sl3sUHVl-143" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ finalizarViagem(): void" vertex="1">
           <mxGeometry height="26" width="360" y="181" as="geometry" />
         </mxCell>
         <mxCell id="jZddg3LLGUw6Sl3sUHVl-37" parent="jZddg3LLGUw6Sl3sUHVl-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ atualizarPlano(): void" vertex="1">
