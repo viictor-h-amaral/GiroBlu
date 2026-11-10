@@ -28,7 +28,7 @@ public abstract class VeiculoEletrico extends Veiculo {
         return this.bateria;
     }
 
-    public void recarregarBateria(){ //TODO: parâmetros do método (Administrador administrador)
+    public void recarregarBateria(){//TODO: parâmetros do método (Administrador administrador)
         this.bateria = 100;
     }
 
