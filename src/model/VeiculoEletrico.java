@@ -39,12 +39,15 @@ public abstract class VeiculoEletrico extends Veiculo {
     @Override 
     public void validarLiberarParaViagem() throws ProblemaViagemException{
         super.validarLiberarParaViagem();
-        if(this.bateria < 20){
+        if(getBateria() < 20){
             throw new BateriaInsuficienteException();
         }
     }
 
     public void calcularBateria(int minutos){
+        if (minutos < 0) {
+            throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
+        }
         this.bateria = getBateria() - (minutos * getConsumoPorMinuto());
         if(getBateria() < 0){
             this.bateria = 0;

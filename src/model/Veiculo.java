@@ -72,10 +72,16 @@ public abstract class Veiculo {
     }
 
     public double calcularValorPorTempoDeUso(int minutos) {
+        if (minutos < 0) {
+            throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
+        }
         return minutos * getValorPorMinuto();
     }
 
     public double calcularValorTotal(int minutos) {
+        if (minutos < 0) {
+            throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
+        }
         return calcularValorPorTempoDeUso(minutos) + getValorDesbloqueio();
     }
 
