@@ -1,7 +1,7 @@
 package model;
 
 import exceptions.ProblemaViagemException;
-import exceptions.VeiculoEmUsoException;
+import exceptions.VeiculoIndisponivelException;
 import auxiliares.EstadoAtualVeiculo;
 
 public abstract class Veiculo {
@@ -25,13 +25,13 @@ public abstract class Veiculo {
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if(modelo == null || modelo.trim().isEmpty()){
+        if(modelo == null || modelo.isBlank()){
             throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
         }
-        if(valorDesbloqueio <= 0){
+        if(valorDesbloqueio < 0){
             throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
         }
-        if(valorPorMinuto <= 0){
+        if(valorPorMinuto < 0){
             throw new IllegalArgumentException("Valor por minuto inválido. Deve ser maior que zero.");
         }
     }
@@ -57,17 +57,17 @@ public abstract class Veiculo {
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
-        if(this.estadoAtual == EstadoAtualVeiculo.INDISPONIVEL){
-            throw new VeiculoEmUsoException();
+        if(this.estadoAtual != EstadoAtualVeiculo.DISPONIVEL){
+            throw new VeiculoIndisponivelException();
         }
     }
 
     public void liberarParaViagem() throws ProblemaViagemException{
         validarLiberarParaViagem();
-        this.estadoAtual = EstadoAtualVeiculo.INDISPONIVEL;
+        this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void devolverParaEstacao() {
+    public void devolverParaEstacao(){ //TODO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 

@@ -3,7 +3,8 @@ package auxiliares;
 public enum EstadoAtualVeiculo {
 
     DISPONIVEL(1),
-    INDISPONIVEL(2);
+    EM_MANUTENCAO(2),
+    EM_VIAGEM(3);
 
 
     private int estadoAtual;

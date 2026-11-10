@@ -28,7 +28,7 @@ public abstract class VeiculoEletrico extends Veiculo {
         return this.bateria;
     }
 
-    public void recarregarBateria(Administrador administrador){
+    public void recarregarBateria(){ //TODO: parâmetros do método (Administrador administrador)
         this.bateria = 100;
     }
 
@@ -45,8 +45,8 @@ public abstract class VeiculoEletrico extends Veiculo {
     }
 
     public void calcularBateria(int minutos){
-        this.bateria = this.bateria - (minutos * this.consumoPorMinuto);
-        if(this.bateria < 0){
+        this.bateria = getBateria() - (minutos * getConsumoPorMinuto());
+        if(getBateria() < 0){
             this.bateria = 0;
         }
     }
