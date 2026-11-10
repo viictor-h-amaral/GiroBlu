@@ -1,5 +1,8 @@
 package model.Planos;
 
+import model.PatineteEletrico;
+import model.Veiculo;
+
 public class PlanoUniversitario extends PlanoGratuito {
 
     public PlanoUniversitario(int codigo, String instituicao, int matricula) {
@@ -27,5 +30,14 @@ public class PlanoUniversitario extends PlanoGratuito {
     private int matricula;
     public int getMatricula() {
         return matricula;
+    }
+
+    @Override
+    public double calcularTarifa(int minutos, Veiculo veiculo) {
+        double desconto = 0.5;
+        if (veiculo instanceof PatineteEletrico) {
+            desconto = 0;
+        }
+        return veiculo.calcularValorTotal(minutos) * (1 - desconto);
     }
 }
