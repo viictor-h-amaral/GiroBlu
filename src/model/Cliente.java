@@ -7,7 +7,7 @@ public class Cliente extends Usuario {
 
     public Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
         super(codigo, nome, email);
-        ValidarCriacaoCliente(plano, cpf);
+        validarCriacaoCliente(plano, cpf);
 
         this.plano = plano;
         this.carteira = new Carteira(codigo, 0.0);
@@ -15,7 +15,7 @@ public class Cliente extends Usuario {
         this.emViagem = emViagem;
     }
 
-    private void ValidarCriacaoCliente(Plano plano, String cpf) {
+    private void validarCriacaoCliente(Plano plano, String cpf) {
         if (cpf == null || cpf.isBlank()) {
             throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
         }
@@ -67,5 +67,15 @@ public class Cliente extends Usuario {
     public void finalizarViagem() {
         validarFinalizarViagem();
         emViagem = false;
+    }
+
+    public void atualizarPlano(Plano novoPlano) {
+        if (novoPlano == null) {
+            throw new IllegalArgumentException("Novo plano inválido. Não pode ser nulo.");
+        }
+        else if (novoPlano.equals(plano)) {
+            throw new IllegalArgumentException("Novo plano inválido. Plano solicitado é o plano atual.");
+        }
+        this.plano = novoPlano;
     }
 }
