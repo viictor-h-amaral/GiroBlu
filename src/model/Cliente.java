@@ -16,7 +16,7 @@ public class Cliente extends Usuario {
     }
 
     private void ValidarCriacaoCliente(Plano plano, String cpf) {
-        if (cpf == null || cpf.trim().isEmpty()) {
+        if (cpf == null || cpf.isBlank()) {
             throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
         }
         else if (plano == null){

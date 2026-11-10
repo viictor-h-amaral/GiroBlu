@@ -12,7 +12,7 @@ public abstract class Plano {
         if (codigo <= 0) {
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if (nome == null || nome.trim().isEmpty()) {
+        if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }
     }

@@ -11,7 +11,7 @@ public class PlanoUniversitario extends PlanoGratuito {
     }
 
     private void ValidarCriacaoPlanoUniversitario(String instituicao, int matricula) {
-        if (instituicao == null || instituicao.trim().isEmpty()) {
+        if (instituicao == null || instituicao.isBlank()) {
             throw new IllegalArgumentException("Instituição inválida. Não pode ser nula ou vazia.");
         }
         if (matricula <= 0) {

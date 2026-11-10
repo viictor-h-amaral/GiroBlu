@@ -13,10 +13,10 @@ public abstract class Usuario {
         if (codigo <= 0) {
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if (nome == null || nome.trim().isEmpty()) {
+        if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }
-        if (email == null || email.trim().isEmpty()) {
+        if (email == null || email.isBlank() || !email.contains("@")) {
             throw new IllegalArgumentException("Email inválido. Não pode ser nulo ou vazio.");
         }
     }

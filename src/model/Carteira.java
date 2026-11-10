@@ -14,9 +14,6 @@ public class Carteira {
         if (codigo <= 0) {
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if (saldo < 0) {
-            throw new IllegalArgumentException("Saldo inválido. Não pode ser negativo.");
-        }
     }
 
     private int codigo;
