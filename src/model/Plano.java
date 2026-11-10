@@ -3,12 +3,12 @@ package model;
 public abstract class Plano {
 
     public Plano(int codigo, String nome){
-        ValidarCriacaoPlano(codigo, nome);
+        validarCriacaoPlano(codigo, nome);
         this.codigo = codigo;
         this.nome = nome;
     }
 
-    private void ValidarCriacaoPlano(int codigo, String nome) {
+    private void validarCriacaoPlano(int codigo, String nome) {
         if (codigo <= 0) {
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }

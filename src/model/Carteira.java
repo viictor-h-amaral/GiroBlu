@@ -5,12 +5,12 @@ import exceptions.ValorRecargaInvalidoException;
 public class Carteira {
 
     public Carteira(int codigo, double saldo) {
-        ValidarCriacaoCarteira(codigo, saldo);
+        validarCriacaoCarteira(codigo, saldo);
         this.codigo = codigo;
         this.saldo = saldo;
     }
 
-    private void ValidarCriacaoCarteira(int codigo, double saldo) {
+    private void validarCriacaoCarteira(int codigo, double saldo) {
         if (codigo <= 0) {
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
