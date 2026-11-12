@@ -1,10 +1,13 @@
 package model;
 
+import exceptions.GiroBluException;
 import exceptions.ProblemaViagemException;
+import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
 import auxiliares.EstadoAtualVeiculo;
+import contracts.Manutensivel;
 
-public abstract class Veiculo {
+public abstract class Veiculo implements Manutensivel{
 
     private int codigo;
     private String modelo;
@@ -67,7 +70,7 @@ public abstract class Veiculo {
         this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void devolverParaEstacao(){ //TODO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void retornarViagem(){ //TODO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
@@ -83,6 +86,20 @@ public abstract class Veiculo {
             throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
         }
         return calcularValorPorTempoDeUso(minutos) + getValorDesbloqueio();
+    }
+    
+    @Override 
+    public void enviarParaManutencao() throws GiroBluException{
+        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+            throw new VeiculoEmUsoException();
+        }
+
+        this.estadoAtual = EstadoAtualVeiculo.EM_MANUTENCAO;
+    }
+
+    @Override 
+    public void retornarManutencao(){
+        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
 }
