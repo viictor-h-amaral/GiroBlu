@@ -31,7 +31,7 @@ public abstract class VeiculoEletrico extends Veiculo{
     }
 
     public void recarregarBateria() throws GiroBluException{ //TODO: parâmetros do método (Administrador administrador)
-        super.enviarParaManutencao();
+        enviarParaManutencao();
         this.bateria = 100;
     }
 
@@ -42,7 +42,7 @@ public abstract class VeiculoEletrico extends Veiculo{
 
     @Override 
     public void validarLiberarParaViagem() throws ProblemaViagemException{
-        super.validarLiberarParaViagem();
+        validarLiberarParaViagem();
         if(getBateria() < 20){
             throw new BateriaInsuficienteException();
         }
