@@ -3,7 +3,7 @@ package model;
 import exceptions.BateriaInsuficienteException;
 import exceptions.GiroBluException;
 import exceptions.ProblemaViagemException;
-
+import exceptions.VeiculoEmUsoException;
 
 public abstract class VeiculoEletrico extends Veiculo{
 
@@ -30,8 +30,8 @@ public abstract class VeiculoEletrico extends Veiculo{
         return this.bateria;
     }
 
-    public void recarregarBateria() throws GiroBluException{ //TODO: parâmetros do método (Administrador administrador)
-        super.enviarParaManutencao();
+    public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
+        enviarParaManutencao();
         this.bateria = 100;
     }
 
