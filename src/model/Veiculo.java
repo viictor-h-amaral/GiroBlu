@@ -62,7 +62,7 @@ public abstract class Veiculo implements Manutensivel{
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
-        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+        if(this.estadoAtual != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoIndisponivelException();
         }
     }
@@ -94,7 +94,7 @@ public abstract class Veiculo implements Manutensivel{
     }
     
     @Override 
-    public void enviarParaManutencao() throws GiroBluException{
+    public void enviarParaManutencao() throws VeiculoEmUsoException{
         if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoEmUsoException();
         }
@@ -103,7 +103,7 @@ public abstract class Veiculo implements Manutensivel{
     }
 
     @Override 
-    public void retornarManutencao() throws GiroBluException{
+    public void retornarManutencao() throws VeiculoNaoEmManutencaoException{
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO){
             throw new VeiculoNaoEmManutencaoException();
         }

@@ -41,7 +41,7 @@ public abstract class VeiculoEletrico extends Veiculo{
     }
 
     @Override 
-    public void validarLiberarParaViagem() throws ProblemaViagemException{
+    public void validarLiberarParaViagem() throws BateriaInsuficienteException{
         validarLiberarParaViagem();
         if(getBateria() < 20){
             throw new BateriaInsuficienteException();
