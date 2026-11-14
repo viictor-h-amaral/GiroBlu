@@ -2,8 +2,6 @@ package model;
 
 import exceptions.BateriaInsuficienteException;
 import exceptions.GiroBluException;
-import exceptions.ProblemaViagemException;
-
 
 public abstract class VeiculoEletrico extends Veiculo{
 
