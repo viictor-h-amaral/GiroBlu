@@ -4,6 +4,8 @@ import exceptions.GiroBluException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
+import exceptions.VeiculoNaoEmManutencaoException;
+import exceptions.VeiculoNaoEmViagemException;
 import auxiliares.EstadoAtualVeiculo;
 import contracts.Manutensivel;
 
@@ -70,7 +72,10 @@ public abstract class Veiculo implements Manutensivel{
         this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void retornarViagem(){ //TODO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+        if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
+            throw new VeiculoNaoEmViagemException();
+        }
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
@@ -98,7 +103,10 @@ public abstract class Veiculo implements Manutensivel{
     }
 
     @Override 
-    public void retornarManutencao(){
+    public void retornarManutencao() throws GiroBluException{
+        if(getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO){
+            throw new VeiculoNaoEmManutencaoException();
+        }
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
