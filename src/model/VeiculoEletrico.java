@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.BateriaInsuficienteException;
+import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 
 public abstract class VeiculoEletrico extends Veiculo{
@@ -39,8 +40,8 @@ public abstract class VeiculoEletrico extends Veiculo{
     }
 
     @Override 
-    public void validarLiberarParaViagem() throws BateriaInsuficienteException{
-        validarLiberarParaViagem();
+    public void validarLiberarParaViagem() throws ProblemaViagemException{
+        super.validarLiberarParaViagem();
         if(getBateria() < 20){
             throw new BateriaInsuficienteException();
         }
