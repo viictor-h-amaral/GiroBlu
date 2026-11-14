@@ -1,6 +1,5 @@
 package contracts;
 
-import exceptions.GiroBluException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoNaoEmManutencaoException;
 
