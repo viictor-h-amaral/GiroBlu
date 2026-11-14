@@ -2,8 +2,9 @@ package model;
 
 import exceptions.BateriaInsuficienteException;
 import exceptions.ProblemaViagemException;
+import exceptions.VeiculoEmUsoException;
 
-public abstract class VeiculoEletrico extends Veiculo {
+public abstract class VeiculoEletrico extends Veiculo{
 
     private int bateria;
     private int consumoPorMinuto;
@@ -28,9 +29,11 @@ public abstract class VeiculoEletrico extends Veiculo {
         return this.bateria;
     }
 
-    public void recarregarBateria(){ //TODO: parâmetros do método (Administrador administrador)
+    public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
+        enviarParaManutencao();
         this.bateria = 100;
     }
+
 
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;
@@ -39,12 +42,15 @@ public abstract class VeiculoEletrico extends Veiculo {
     @Override 
     public void validarLiberarParaViagem() throws ProblemaViagemException{
         super.validarLiberarParaViagem();
-        if(this.bateria < 20){
+        if(getBateria() < 20){
             throw new BateriaInsuficienteException();
         }
     }
 
     public void calcularBateria(int minutos){
+        if (minutos < 0) {
+            throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
+        }
         this.bateria = getBateria() - (minutos * getConsumoPorMinuto());
         if(getBateria() < 0){
             this.bateria = 0;
