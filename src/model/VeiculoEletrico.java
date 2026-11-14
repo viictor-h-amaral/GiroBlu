@@ -2,8 +2,9 @@ package model;
 
 import exceptions.BateriaInsuficienteException;
 import exceptions.ProblemaViagemException;
+import exceptions.VeiculoEmUsoException;
 
-public abstract class VeiculoEletrico extends Veiculo {
+public abstract class VeiculoEletrico extends Veiculo{
 
     private int bateria;
     private int consumoPorMinuto;
@@ -28,9 +29,11 @@ public abstract class VeiculoEletrico extends Veiculo {
         return this.bateria;
     }
 
-    public void recarregarBateria(){ //TODO: parâmetros do método (Administrador administrador)
+    public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
+        enviarParaManutencao();
         this.bateria = 100;
     }
+
 
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;

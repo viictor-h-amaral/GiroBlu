@@ -1,10 +1,14 @@
 package model;
 
 import exceptions.ProblemaViagemException;
+import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
+import exceptions.VeiculoNaoEmManutencaoException;
+import exceptions.VeiculoNaoEmViagemException;
 import auxiliares.EstadoAtualVeiculo;
+import contracts.Manutensivel;
 
-public abstract class Veiculo {
+public abstract class Veiculo implements Manutensivel{
 
     private int codigo;
     private String modelo;
@@ -57,7 +61,7 @@ public abstract class Veiculo {
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
-        if(this.estadoAtual != EstadoAtualVeiculo.DISPONIVEL){
+        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoIndisponivelException();
         }
     }
@@ -67,7 +71,10 @@ public abstract class Veiculo {
         this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void devolverParaEstacao(){ //TODO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+        if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
+            throw new VeiculoNaoEmViagemException();
+        }
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
@@ -83,6 +90,23 @@ public abstract class Veiculo {
             throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
         }
         return calcularValorPorTempoDeUso(minutos) + getValorDesbloqueio();
+    }
+    
+    @Override 
+    public void enviarParaManutencao() throws VeiculoEmUsoException{
+        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+            throw new VeiculoEmUsoException();
+        }
+
+        this.estadoAtual = EstadoAtualVeiculo.EM_MANUTENCAO;
+    }
+
+    @Override 
+    public void retornarManutencao() throws VeiculoNaoEmManutencaoException{
+        if(getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO){
+            throw new VeiculoNaoEmManutencaoException();
+        }
+        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
 }
