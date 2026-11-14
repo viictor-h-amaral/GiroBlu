@@ -57,7 +57,7 @@ public abstract class Veiculo {
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
-        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+        if(this.estadoAtual != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoIndisponivelException();
         }
     }
