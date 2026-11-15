@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import contracts.Manutensivel;
 import exceptions.EstacaoLotadaException;
-import exceptions.GiroBluException;
+import exceptions.VeiculoEmUsoException;
 
 public class Estacao {
 
@@ -26,10 +26,10 @@ public class Estacao {
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if(nome == null || nome.isBlank()){
+        else if(nome == null || nome.isBlank()){
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }
-        if(limiteVagas <= 0){
+        else if(limiteVagas <= 0){
             throw new IllegalArgumentException("Limite de Vagas inválido. Deve ser maior que zero.");
         }
     }
@@ -66,7 +66,7 @@ public class Estacao {
         return endereco.getNumero();
     }
 
-    public void adicionarVeiculo(Veiculo veiculo) throws GiroBluException{
+    public void adicionarVeiculo(Veiculo veiculo) throws EstacaoLotadaException{
         if(veiculos.size() >= getLimiteVagas()){
                 throw new EstacaoLotadaException(getNome(), getLimiteVagas());
         }
@@ -80,10 +80,23 @@ public class Estacao {
         veiculos.remove(veiculo);
     }
 
-    public void enviarVeiculosParaManutencao(ArrayList<Manutensivel> manutensiveis) throws GiroBluException{
+    public void enviarVeiculosParaManutencao(ArrayList<Manutensivel> manutensiveis) throws VeiculoEmUsoException {
+        ArrayList<String> erros = new ArrayList<>();
+
         for (Manutensivel manutensivel : manutensiveis) {
-            manutensivel.enviarParaManutencao();
+            try {
+                manutensivel.enviarParaManutencao();
+            } catch (Exception e) {
+                if(manutensivel instanceof Veiculo){
+                    Veiculo veiculo = (Veiculo) manutensivel;
+                    erros.add(("modelo: " + veiculo.getModelo()
+                    + ", codigo: " + veiculo.getCodigo()));    
+                } 
+            }
+        }
+
+        if (!erros.isEmpty()) {
+            throw new VeiculoEmUsoException("O seguintes veículos não podem ser enviados para manuteção: " + erros);
         }
     }
-
 }
