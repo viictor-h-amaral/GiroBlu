@@ -89,14 +89,14 @@ public class Estacao {
             } catch (Exception e) {
                 if(manutensivel instanceof Veiculo){
                     Veiculo veiculo = (Veiculo) manutensivel;
-                    erros.add(("modelo: " + veiculo.getModelo()
+                    erros.add(("\n modelo: " + veiculo.getModelo()
                     + ", codigo: " + veiculo.getCodigo()));    
                 } 
             }
         }
 
         if (!erros.isEmpty()) {
-            throw new VeiculoEmUsoException("O seguintes veículos não podem ser enviados para manuteção: " + erros);
+            throw new VeiculoEmUsoException("Os seguintes veículos não podem ser enviados para manuteção: " + erros);
         }
     }
 }

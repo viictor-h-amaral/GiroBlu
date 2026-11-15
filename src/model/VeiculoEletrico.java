@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.BateriaInsuficienteException;
-import exceptions.GiroBluException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 

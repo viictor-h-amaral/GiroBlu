@@ -1,6 +1,5 @@
 package model;
 
-import exceptions.GiroBluException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
@@ -19,7 +18,7 @@ public abstract class Veiculo implements Manutensivel{
     private Estacao estacao;
 
     public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
-        validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto);
+        validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
         this.codigo = codigo;
         this.modelo = modelo;
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
@@ -28,7 +27,7 @@ public abstract class Veiculo implements Manutensivel{
         this.estacao = estacao;
     }
 
-    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto){
+    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
@@ -64,6 +63,10 @@ public abstract class Veiculo implements Manutensivel{
 
     public double getValorPorMinuto() {
         return this.valorPorMinuto;
+    }
+
+    public Estacao getEstacao(){
+        return this.estacao;
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
