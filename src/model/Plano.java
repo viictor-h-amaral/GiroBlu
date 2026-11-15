@@ -1,6 +1,8 @@
 package model;
 
-public abstract class Plano {
+import contracts.Tarifavel;
+
+public abstract class Plano implements Tarifavel {
 
     public Plano(int codigo, String nome){
         validarCriacaoPlano(codigo, nome);
