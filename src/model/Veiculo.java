@@ -15,17 +15,19 @@ public abstract class Veiculo implements Manutensivel{
     private EstadoAtualVeiculo estadoAtual;
     private double valorDesbloqueio;
     private double valorPorMinuto;
+    private Estacao estacao;
 
-    public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto) {
-        validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto);
+    public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+        validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
         this.codigo = codigo;
         this.modelo = modelo;
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
         this.valorDesbloqueio = valorDesbloqueio;
         this.valorPorMinuto = valorPorMinuto;
+        this.estacao = estacao;
     }
 
-    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto){
+    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
@@ -37,6 +39,9 @@ public abstract class Veiculo implements Manutensivel{
         }
         if(valorPorMinuto < 0){
             throw new IllegalArgumentException("Valor por minuto inválido. Deve ser maior que zero.");
+        }
+        if(estacao == null){
+            throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
         }
     }
 
@@ -58,6 +63,10 @@ public abstract class Veiculo implements Manutensivel{
 
     public double getValorPorMinuto() {
         return this.valorPorMinuto;
+    }
+
+    public Estacao getEstacao(){
+        return this.estacao;
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
