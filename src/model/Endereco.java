@@ -22,16 +22,16 @@ public class Endereco {
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if(estado == null || estado.isBlank()){
+        else if(estado == null || estado.isBlank()){
             throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
         }
-        if(cidade == null || cidade.isBlank()){
+        else if(cidade == null || cidade.isBlank()){
             throw new IllegalArgumentException("Cidade inválido. Não pode ser nulo ou vazio.");
         }
-        if(logradouro == null || logradouro.isBlank()){
+        else if(logradouro == null || logradouro.isBlank()){
             throw new IllegalArgumentException("Logradouro inválido. Não pode ser nulo ou vazio.");
         }
-        if(numero <= 0){
+        else if(numero <= 0){
             throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
         }
     }
