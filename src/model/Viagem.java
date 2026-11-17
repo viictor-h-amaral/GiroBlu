@@ -3,6 +3,7 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import exceptions.ProblemaViagemException;
 import exceptions.VeiculoNaoEmViagemException;
 
 public class Viagem {
@@ -10,17 +11,23 @@ public class Viagem {
     private int codigo;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFinal = null;
-    private Cliente usuario;
+    private Cliente viajante;
     private Veiculo veiculo;
 
-    public Viagem(int codigo, Cliente usuario, Veiculo veiculo) {
+    public Viagem(int codigo, Cliente usuario, Veiculo veiculo) throws ProblemaViagemException {
         validarCriacaoViagem(codigo, usuario, veiculo);
+
+        usuario.validarLiberarParaViagem();
+        veiculo.validarLiberarParaViagem();
         
         this.codigo = codigo;
-        this.usuario = usuario;
+        this.viajante = usuario;
         this.veiculo = veiculo;
 
         this.dataHoraInicio = LocalDateTime.now();
+
+        this.viajante.liberarParaViagem();
+        this.veiculo.liberarParaViagem();
     }
 
     private void validarCriacaoViagem(int codigo, Cliente usuario, Veiculo veiculo){
@@ -47,8 +54,8 @@ public class Viagem {
         return this.dataHoraFinal;
     }
 
-    public Cliente getUsuario() {
-        return this.usuario;
+    public Cliente getViajante() {
+        return this.viajante;
     }
 
     public Veiculo getVeiculo() {
@@ -58,7 +65,7 @@ public class Viagem {
     public void finalizarViagem(LocalDateTime dataHoraFinal) throws VeiculoNaoEmViagemException{ // 
         this.dataHoraFinal = dataHoraFinal;
         this.veiculo.retornarViagem();
-        this.usuario.finalizarViagem();
+        this.viajante.finalizarViagem();
     }
 
     public int calcularMinutosViagem() {
@@ -70,7 +77,7 @@ public class Viagem {
 
     public double calcularValorViagem() {
         int minutos = calcularMinutosViagem();
-        double valorPorMinuto = usuario.getPlano().calcularTarifa(minutos, veiculo);
-        return valorPorMinuto;
+        double valorTotal = viajante.getPlano().calcularTarifa(minutos, veiculo);
+        return valorTotal;
     }
 }
