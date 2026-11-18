@@ -54,7 +54,7 @@ public class Viagem {
         return this.dataHoraFinal;
     }
 
-    public Cliente getUsuario() {
+    public Cliente getViajante() {
         return this.viajante;
     }
 
