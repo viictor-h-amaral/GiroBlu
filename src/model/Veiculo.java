@@ -7,8 +7,9 @@ import exceptions.VeiculoNaoEmManutencaoException;
 import exceptions.VeiculoNaoEmViagemException;
 import auxiliares.EstadoAtualVeiculo;
 import contracts.Manutensivel;
+import contracts.Salvavel;
 
-public abstract class Veiculo implements Manutensivel{
+public abstract class Veiculo implements Manutensivel, Salvavel{
 
     private int codigo;
     private String modelo;
@@ -47,6 +48,10 @@ public abstract class Veiculo implements Manutensivel{
 
     public int getCodigo() {
         return this.codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getModelo() {
