@@ -3,39 +3,32 @@ package model;
 import java.util.ArrayList;
 
 import contracts.Manutensivel;
+import contracts.Salvavel;
 import exceptions.EstacaoLotadaException;
 import exceptions.VeiculoEmUsoException;
 
-public class Estacao {
+public class Estacao extends Salvavel {
 
-    private int codigo;
     private String nome;
     private int limiteVagas;
     private ArrayList<Veiculo> veiculos = new ArrayList<>();
     private Endereco endereco;
 
     public Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
-        validarCriacaoEstacao(codigo, nome, limiteVagas);
+        validarCriacaoEstacao(nome, limiteVagas);
         this.endereco = new Endereco(codigo, estado, cidade, logradouro, numero);
         this.codigo = codigo;
         this.nome = nome;
         this.limiteVagas = limiteVagas;
     }
 
-    private void validarCriacaoEstacao(int codigo, String nome, int limiteVagas){
-        if(codigo <= 0){
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        else if(nome == null || nome.isBlank()){
+    private void validarCriacaoEstacao(String nome, int limiteVagas){
+        if(nome == null || nome.isBlank()){
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }
         else if(limiteVagas <= 0){
             throw new IllegalArgumentException("Limite de Vagas inválido. Deve ser maior que zero.");
         }
-    }
-
-    public int getCodigo(){
-        return this.codigo;
     }
 
     public String getNome(){

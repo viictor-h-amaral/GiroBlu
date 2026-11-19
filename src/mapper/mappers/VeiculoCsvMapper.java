@@ -1,9 +1,10 @@
-package mapper;
+package mapper.mappers;
 
 import java.io.IOException;
 
 import auxiliares.EstadoAtualVeiculo;
 import helper.CsvHelper;
+import mapper.CsvMapper;
 import model.Estacao;
 import model.Veiculo;
 

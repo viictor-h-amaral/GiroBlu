@@ -9,18 +9,16 @@ import auxiliares.EstadoAtualVeiculo;
 import contracts.Manutensivel;
 import contracts.Salvavel;
 
-public abstract class Veiculo implements Manutensivel, Salvavel{
+public abstract class Veiculo extends Salvavel implements Manutensivel {
 
-    private int codigo;
     private String modelo;
     private EstadoAtualVeiculo estadoAtual;
     private double valorDesbloqueio;
     private double valorPorMinuto;
     private Estacao estacao;
 
-    public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+    public Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
         validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
-        this.codigo = codigo;
         this.modelo = modelo;
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
         this.valorDesbloqueio = valorDesbloqueio;
@@ -44,10 +42,6 @@ public abstract class Veiculo implements Manutensivel, Salvavel{
         if(estacao == null){
             throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
         }
-    }
-
-    public int getCodigo() {
-        return this.codigo;
     }
 
     public void setCodigo(int codigo) {

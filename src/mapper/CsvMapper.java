@@ -2,7 +2,9 @@ package mapper;
 
 import java.io.IOException;
 
-public interface CsvMapper<T> {
+import contracts.Salvavel;
+
+public interface CsvMapper<T extends Salvavel> {
 
     String getCabecalho();
 

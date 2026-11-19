@@ -1,3 +1,5 @@
+import model.Carteira;
+import model.Cliente;
 import model.Estacao;
 import model.PatineteEletrico;
 
@@ -15,6 +17,5 @@ public class Main {
         v1.retornarManutencao();
         v1.liberarParaViagem();
         System.out.println("Estacao: " + v1.getEstadoAtual().ordinal());
-
     }
 }

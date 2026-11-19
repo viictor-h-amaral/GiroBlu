@@ -5,12 +5,30 @@ import exceptions.ViagemEmAndamentoException;
 
 public class Cliente extends Usuario {
 
-    public Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
+    public static Cliente criarCliente(String nome, String email, Plano plano, String cpf) {
+        return new Cliente(nome, email, plano, false, cpf);
+    }
+
+    public static Cliente carregarCliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
+        return new Cliente(codigo, nome, email, plano, emViagem, cpf);
+    }
+
+    private Cliente(String nome, String email, Plano plano, boolean emViagem, String cpf) {
+        super(nome, email);
+        validarCriacaoCliente(plano, cpf);
+
+        this.plano = plano;
+        this.carteira = Carteira.criarCarteira();
+        this.cpf = cpf;
+        this.emViagem = emViagem;
+    }
+
+    private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
         super(codigo, nome, email);
         validarCriacaoCliente(plano, cpf);
 
         this.plano = plano;
-        this.carteira = new Carteira(codigo, 0.0);
+        this.carteira = Carteira.carregarCarteira(codigo, 0.0);
         this.cpf = cpf;
         this.emViagem = emViagem;
     }

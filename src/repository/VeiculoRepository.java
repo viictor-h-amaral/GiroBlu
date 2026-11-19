@@ -2,7 +2,7 @@ package repository;
 
 import java.io.IOException;
 
-import mapper.VeiculoCsvMapper;
+import mapper.mappers.VeiculoCsvMapper;
 import model.Veiculo;
 
 public class VeiculoRepository extends Repository<Veiculo> {

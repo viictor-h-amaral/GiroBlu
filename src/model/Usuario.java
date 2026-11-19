@@ -1,19 +1,25 @@
 package model;
 
-public abstract class Usuario {
+import contracts.Salvavel;
 
-    public Usuario(int codigo, String nome, String email) {
-        validarCriacaoUsuario(codigo, nome, email);
-        this.codigo = codigo;
+public abstract class Usuario extends Salvavel {
+
+    protected Usuario(String nome, String email){
+        super();
+        validarCriacaoUsuario(nome, email);
         this.nome = nome;
         this.email = email;
     }
 
-    private void validarCriacaoUsuario(int codigo, String nome, String email) {
-        if (codigo <= 0) {
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        else if (nome == null || nome.isBlank()) {
+    protected Usuario(int codigo, String nome, String email) {
+        super(codigo);
+        validarCriacaoUsuario(nome, email);
+        this.nome = nome;
+        this.email = email;
+    }
+
+    private void validarCriacaoUsuario(String nome, String email) {
+        if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }
         else if (email == null || email.isBlank()) {
@@ -22,11 +28,6 @@ public abstract class Usuario {
         else if (!email.contains("@")) {
             throw new IllegalArgumentException("Email inválido. Email deve conter '@'.");
         }
-    }
-
-    private int codigo;
-    public int getCodigo() {
-        return codigo;
     }
 
     private String nome;

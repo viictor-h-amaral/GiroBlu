@@ -1,29 +1,35 @@
 package model;
 
+import contracts.Salvavel;
 import exceptions.ValorRecargaInvalidoException;
 
-public class Carteira {
+public class Carteira extends Salvavel{
 
-    public Carteira(int codigo, double saldo) {
-        validarCriacaoCarteira(codigo, saldo);
-        this.codigo = codigo;
-        this.saldo = saldo;
+    public static Carteira carregarCarteira(int codigo, double saldo) {
+        return new Carteira(codigo, saldo);
     }
 
-    private void validarCriacaoCarteira(int codigo, double saldo) {
-        if (codigo <= 0) {
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
+    public static Carteira criarCarteira() {
+        return new Carteira();
     }
 
-    private int codigo;
-    public int getCodigo() {
-        return codigo;
+    private Carteira(int codigo, double saldo) {
+        super(codigo);
+        setSaldo(saldo);
+    }
+
+    private Carteira(){
+        super();
+        setSaldo(0);
     }
 
     private double saldo;
     public double getSaldo() {
         return saldo;
+    }
+
+    private void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
 
     public void realizarRecarga(double valor) throws ValorRecargaInvalidoException {
