@@ -66,9 +66,13 @@ public class Estacao {
         return endereco.getNumero();
     }
 
+    public boolean isLotada(){
+        return veiculos.size() >= getLimiteVagas();
+    }
+
     public void adicionarVeiculo(Veiculo veiculo) throws EstacaoLotadaException{
-        if(veiculos.size() >= getLimiteVagas()){
-                throw new EstacaoLotadaException(getNome(), getLimiteVagas());
+        if(isLotada()){
+            throw new EstacaoLotadaException(getNome(), getLimiteVagas());
         }
         veiculos.add(veiculo);
     }

@@ -3,6 +3,7 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoNaoEmViagemException;
 
@@ -62,10 +63,19 @@ public class Viagem {
         return this.veiculo;
     }
 
-    public void finalizarViagem(LocalDateTime dataHoraFinal) throws VeiculoNaoEmViagemException{ // 
-        this.dataHoraFinal = dataHoraFinal;
-        this.veiculo.retornarViagem();
-        this.viajante.finalizarViagem();
+    public void finalizarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, VeiculoNaoEmViagemException, EstacaoLotadaException{ 
+        getVeiculo().validarRetornarViagem(estacao);
+        getViajante().validarFinalizarViagem();
+        
+        retornarViagemVeiculo(estacao);
+        getViajante().finalizarViagem();
+        
+        this.dataHoraFinal = LocalDateTime.now();
+    }
+
+    private void retornarViagemVeiculo(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
+        getVeiculo().retornarViagem(estacao);
+        estacao.adicionarVeiculo(getVeiculo());
     }
 
     public int calcularMinutosViagem() {

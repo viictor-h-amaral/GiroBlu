@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
@@ -80,10 +81,17 @@ public abstract class Veiculo implements Manutensivel{
         this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void validarRetornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
             throw new VeiculoNaoEmViagemException();
         }
+        else if(estacao.isLotada()){
+            throw new EstacaoLotadaException(estacao.getNome(), estacao.getLimiteVagas());
+        }
+    }
+
+    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+        validarRetornarViagem(estacao);
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
