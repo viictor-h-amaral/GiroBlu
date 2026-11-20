@@ -12,29 +12,25 @@ public abstract class VeiculoEletrico extends Veiculo{
 
     protected VeiculoEletrico(String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao) throws EstacaoLotadaException{
         super(modelo, valorDesbloqueio, valorPorMinuto, estacao);
-        validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
-        this.bateria = bateria;
-        this.consumoPorMinuto = consumoPorMinuto;
+        setBateria(bateria);
+        setConsumoPorMinuto(consumoPorMinuto);
     }
 
     protected VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
         super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
-        validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
-        this.bateria = bateria;
-        this.consumoPorMinuto = consumoPorMinuto;
-    }
-
-    private void validarCriacaoVeiculoEletrico(int bateria, int consumoPorMinuto){
-        if(bateria < 0){
-            throw new IllegalArgumentException("A bateria não pode ser menor que 0.");
-        }
-        else if(consumoPorMinuto <= 0){
-            throw new IllegalArgumentException("O consumo por minuto deve ser maior que 0.");
-        }
+        setBateria(bateria);
+        setConsumoPorMinuto(consumoPorMinuto);
     }
 
     public int getBateria(){
         return this.bateria;
+    }
+
+    protected void setBateria(int bateria){
+        if(bateria < 0){
+            throw new IllegalArgumentException("A bateria não pode ser menor que 0.");
+        }
+        this.bateria = bateria;
     }
 
     public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
@@ -45,6 +41,13 @@ public abstract class VeiculoEletrico extends Veiculo{
 
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;
+    }
+
+    protected void setConsumoPorMinuto(int consumoPorMinuto){
+        if(consumoPorMinuto <= 0){
+            throw new IllegalArgumentException("O consumo por minuto deve ser maior que 0.");
+        }
+        this.consumoPorMinuto = consumoPorMinuto;
     }
 
     @Override 

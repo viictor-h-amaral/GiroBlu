@@ -25,28 +25,17 @@ public class Estacao extends Salvavel {
 
     private Estacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
         super();
-        validarCriacaoEstacao(nome, limiteVagas);
         this.endereco = Endereco.criarEndereco(estado, cidade, logradouro, numero);
-        this.nome = nome;
-        this.limiteVagas = limiteVagas;
+        setNome(nome);
+        setLimiteVagas(limiteVagas);
     }
 
     private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero, List<Veiculo> veiculos){
         super(codigo);
-        validarCriacaoEstacao(nome, limiteVagas);
         this.endereco = Endereco.carregarEndereco(codigo, estado, cidade, logradouro, numero);
-        this.nome = nome;
-        this.limiteVagas = limiteVagas;
+        setNome(nome);
+        setLimiteVagas(limiteVagas);
         this.veiculos = veiculos;
-    }
-
-    private void validarCriacaoEstacao(String nome, int limiteVagas){
-        if(nome == null || nome.isBlank()){
-            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(limiteVagas <= 0){
-            throw new IllegalArgumentException("Limite de Vagas inválido. Deve ser maior que zero.");
-        }
     }
 
     public String getNome(){
@@ -64,6 +53,13 @@ public class Estacao extends Salvavel {
         return this.limiteVagas;
     }
 
+    public void setLimiteVagas(int limiteVagas){
+        if(limiteVagas <= 0){
+            throw new IllegalArgumentException("Limite de Vagas inválido. Deve ser maior que zero.");
+        }
+        this.limiteVagas = limiteVagas;
+    }
+
     public List<Veiculo> getVeiculos(){
         return veiculos;
     }
@@ -72,16 +68,32 @@ public class Estacao extends Salvavel {
         return endereco.getEstado();
     }
 
+    public void setEstado(String estado){
+        endereco.setEstado(estado);
+    }
+
     public String getCidade(){
         return endereco.getCidade();
+    }
+
+    public void setCidade(String cidade){
+        endereco.setCidade(cidade);
     }
 
     public String getLogradouro(){
         return endereco.getLogradouro();
     }
 
+    public void setLogradouro(String logradouro){
+        endereco.setLogradouro(logradouro);
+    }
+
     public int getNumero(){
         return endereco.getNumero();
+    }
+
+    public void setNumero(int numero){
+        endereco.setNumero(numero);
     }
 
     public void adicionarVeiculo(Veiculo veiculo) throws EstacaoLotadaException{

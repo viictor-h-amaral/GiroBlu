@@ -15,35 +15,40 @@ public class PlanoUniversitario extends PlanoGratuito {
 
     private PlanoUniversitario(String instituicao, int matricula) {
         super("Plano Universitário");
-        validarCriacaoPlanoUniversitario(instituicao, matricula);
         this.instituicao = instituicao;
         this.matricula = matricula;
     }
 
     private PlanoUniversitario(int codigo, String instituicao, int matricula) {
         super(codigo, "Plano Universitário");
-        validarCriacaoPlanoUniversitario(instituicao, matricula);
         this.instituicao = instituicao;
         this.matricula = matricula;
     }
 
-    private void validarCriacaoPlanoUniversitario(String instituicao, int matricula) {
-        if (instituicao == null || instituicao.isBlank()) {
-            throw new IllegalArgumentException("Instituição inválida. Não pode ser nula ou vazia.");
-        }
-        else if (matricula <= 0) {
-            throw new IllegalArgumentException("Matrícula inválida. Deve ser maior que zero.");
-        }
-    }
-
     private String instituicao;
+
     public String getInstituicao() {
         return instituicao;
     }
 
+    public void setInstituicao(String instituicao){
+        if (instituicao == null || instituicao.isBlank()) {
+            throw new IllegalArgumentException("Instituição inválida. Não pode ser nula ou vazia.");
+        }
+        this.instituicao = instituicao;
+    }
+
     private int matricula;
+
     public int getMatricula() {
         return matricula;
+    }
+
+    public void setMatricula(int matricula){
+        if (matricula <= 0) {
+            throw new IllegalArgumentException("Matrícula inválida. Deve ser maior que zero.");
+        }
+        this.matricula = matricula;
     }
 
     @Override

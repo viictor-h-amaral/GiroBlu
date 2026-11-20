@@ -12,24 +12,24 @@ public class Administrador extends Usuario {
 
     private Administrador(String nome, String email, int codigoAcesso) {
         super(nome, email);
-        validarCriacaoAdministrador(codigoAcesso);
-        this.codigoAcesso = codigoAcesso;
+        setCodigoAcesso(codigoAcesso);
     }
 
     private Administrador(int codigo, String nome, String email, int codigoAcesso) {
         super(codigo, nome, email);
-        validarCriacaoAdministrador(codigoAcesso);
-        this.codigoAcesso = codigoAcesso;
-    }
-
-    private void validarCriacaoAdministrador(int codigoAcesso) {
-        if (codigoAcesso <= 0) {
-            throw new IllegalArgumentException("Código de acesso inválido. Deve ser maior que zero.");
-        }
+        setCodigoAcesso(codigoAcesso);
     }
 
     private int codigoAcesso;
+
     public int getCodigoAcesso() {
         return codigoAcesso;
+    }
+
+    public void setCodigoAcesso(int codigoAcesso){
+        if (codigoAcesso <= 0) {
+            throw new IllegalArgumentException("Código de acesso inválido. Deve ser maior que zero.");
+        }
+        this.codigoAcesso = codigoAcesso;
     }
 }

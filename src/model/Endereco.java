@@ -19,51 +19,61 @@ public class Endereco extends Salvavel {
 
     private Endereco(String estado, String cidade, String logradouro, int numero){
         super();
-        validarCriacaoEndereco(estado, cidade, logradouro, numero);
-        this.estado = estado;
-        this.cidade = cidade;
-        this.logradouro = logradouro;
-        this.numero = numero;
+        setEstado(estado);
+        setCidade(cidade);
+        setLogradouro(logradouro);
+        setNumero(numero);
     }
 
     private Endereco(int codigo, String estado, String cidade, String logradouro, int numero){
         super(codigo);
-        validarCriacaoEndereco(estado, cidade, logradouro, numero);
-        this.estado = estado;
-        this.cidade = cidade;
-        this.logradouro = logradouro;
-        this.numero = numero;
-    }
-
-    private void validarCriacaoEndereco(String estado, String cidade, String logradouro, int numero){
-        if(estado == null || estado.isBlank()){
-            throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(cidade == null || cidade.isBlank()){
-            throw new IllegalArgumentException("Cidade inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(logradouro == null || logradouro.isBlank()){
-            throw new IllegalArgumentException("Logradouro inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(numero <= 0){
-            throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
-        }
+        setEstado(estado);
+        setCidade(cidade);
+        setLogradouro(logradouro);
+        setNumero(numero);
     }
 
     public String getEstado(){
         return this.estado;
     }
 
+    public void setEstado(String estado){
+        if(estado == null || estado.isBlank()){
+            throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
+        }
+        this.estado = estado;
+    }
+
     public String getCidade(){
         return this.cidade;
+    }
+
+    public void setCidade(String cidade){
+        if(cidade == null || cidade.isBlank()){
+            throw new IllegalArgumentException("Cidade inválido. Não pode ser nulo ou vazio.");
+        }
+        this.cidade = cidade;
     }
 
     public String getLogradouro(){
         return this.logradouro;
     }
 
+    public void setLogradouro(String logradouro){
+        if(logradouro == null || logradouro.isBlank()){
+            throw new IllegalArgumentException("Logradouro inválido. Não pode ser nulo ou vazio.");
+        }
+        this.logradouro = logradouro;
+    }
+
     public int getNumero(){
         return this.numero;
     }
 
+    public void setNumero(int numero){
+        if(numero <= 0){
+            throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
+        }
+        this.numero = numero;
+    }
 }

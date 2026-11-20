@@ -15,46 +15,43 @@ public class Cliente extends Usuario {
 
     private Cliente(String nome, String email, Plano plano, boolean emViagem, String cpf) {
         super(nome, email);
-        validarCriacaoCliente(plano, cpf);
-
-        this.plano = plano;
+        atualizarPlano(plano);
         this.carteira = Carteira.criarCarteira();
-        this.cpf = cpf;
+        setCpf(cpf);
         this.emViagem = emViagem;
     }
 
     private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
         super(codigo, nome, email);
-        validarCriacaoCliente(plano, cpf);
-
-        this.plano = plano;
+        atualizarPlano(plano);
         this.carteira = Carteira.carregarCarteira(codigo, 0.0);
-        this.cpf = cpf;
+        setCpf(cpf);
         this.emViagem = emViagem;
     }
 
-    private void validarCriacaoCliente(Plano plano, String cpf) {
-        if (cpf == null || cpf.isBlank()) {
-            throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
-        }
-        else if (plano == null){
-            throw new IllegalArgumentException("Plano inválido. Não pode ser nulo.");
-        }
-    }
-
     private Carteira carteira;
+
     public Carteira getCarteira() {
         return carteira;
     }
 
     private Plano plano;
+
     public Plano getPlano() {
         return plano;
     }
 
     private String cpf;
+
     public String getCpf() {
         return cpf;
+    }
+
+    public void setCpf(String cpf){
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
+        }
+        this.cpf = cpf;
     }
 
     private boolean emViagem;

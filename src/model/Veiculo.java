@@ -20,58 +20,73 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
 
     protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
         super(codigo);
-        validarCriacaoVeiculo(modelo, valorDesbloqueio, valorPorMinuto, estacao);
-        this.modelo = modelo;
-        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
-        this.valorDesbloqueio = valorDesbloqueio;
-        this.valorPorMinuto = valorPorMinuto;
-        this.estacao = estacao;
+        setModelo(modelo);
+        setEstadoAtual(estadoAtual);
+        setValorDesbloqueio(valorDesbloqueio);
+        setValorPorMinuto(valorPorMinuto);        
+        setEstacao(estacao);
     }
     
     protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException {
         super();
-        validarCriacaoVeiculo(modelo, valorDesbloqueio, valorPorMinuto, estacao);
-        this.modelo = modelo;
-        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
-        this.valorDesbloqueio = valorDesbloqueio;
-        this.valorPorMinuto = valorPorMinuto;
-        this.estacao = estacao;
+        setModelo(modelo);
+        setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
+        setValorDesbloqueio(valorDesbloqueio);
+        setValorPorMinuto(valorPorMinuto);
+        setEstacao(estacao);
         estacao.adicionarVeiculo(this);
-    }
-
-    private void validarCriacaoVeiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
-        if(modelo == null || modelo.isBlank()){
-            throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(valorDesbloqueio < 0){
-            throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
-        }
-        else if(valorPorMinuto < 0){
-            throw new IllegalArgumentException("Valor por minuto inválido. Deve ser maior que zero.");
-        }
-        else if(estacao == null){
-            throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
-        }
     }
 
     public String getModelo() {
         return this.modelo;
     }
 
+    public void setModelo(String modelo){
+        if(modelo == null || modelo.isBlank()){
+            throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
+        }
+        this.modelo = modelo;
+    }
+
     public EstadoAtualVeiculo getEstadoAtual() {
         return this.estadoAtual;
+    }
+
+    private void setEstadoAtual(EstadoAtualVeiculo estado){
+        this.estadoAtual = estado;
     }
 
     public double getValorDesbloqueio() {
         return this.valorDesbloqueio;
     }
 
+    public void setValorDesbloqueio(double valorDesbloqueio){
+        if(valorDesbloqueio < 0){
+            throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
+        }
+        this.valorDesbloqueio = valorDesbloqueio;
+    }
+
     public double getValorPorMinuto() {
         return this.valorPorMinuto;
     }
 
+    public void setValorPorMinuto(double valorPorMinuto){
+        if(valorPorMinuto < 0){
+            throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
+        }
+        this.valorPorMinuto = valorPorMinuto;
+    }
+
     public Estacao getEstacao(){
         return this.estacao;
+    }
+
+    private void setEstacao(Estacao estacao){
+        if(estacao == null){
+            throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
+        }
+        this.estacao = estacao;
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
@@ -82,14 +97,14 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
 
     public void liberarParaViagem() throws ProblemaViagemException{
         validarLiberarParaViagem();
-        this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
+        setEstadoAtual(EstadoAtualVeiculo.EM_VIAGEM);
     }
 
     public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
             throw new VeiculoNaoEmViagemException();
         }
-        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
+        setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
     }
 
     public double calcularValorPorTempoDeUso(int minutos) {
@@ -111,8 +126,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoEmUsoException();
         }
-
-        this.estadoAtual = EstadoAtualVeiculo.EM_MANUTENCAO;
+        setEstadoAtual(EstadoAtualVeiculo.EM_MANUTENCAO);
     }
 
     @Override 
@@ -120,7 +134,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO){
             throw new VeiculoNaoEmManutencaoException();
         }
-        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
+        setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
     }
 
 }

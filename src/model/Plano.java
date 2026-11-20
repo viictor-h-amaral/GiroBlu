@@ -7,25 +7,25 @@ public abstract class Plano extends Salvavel implements Tarifavel {
 
     protected Plano(String nome){
         super();
-        validarCriacaoPlano(nome);
-        this.nome = nome;
+        setNome(nome);
     }
 
     protected Plano(int codigo, String nome){
         super(codigo);
-        validarCriacaoPlano(nome);
-        this.nome = nome;
-    }
-
-    private void validarCriacaoPlano(String nome) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
-        }
+        setNome(nome);
     }
 
     private String nome;
+
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome){
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
+        }
+        this.nome = nome;
     }
 
     public abstract double calcularMensalidade(); 
