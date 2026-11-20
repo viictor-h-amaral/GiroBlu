@@ -1,28 +1,42 @@
 package model;
 
-public class Endereco {
+import contracts.Salvavel;
 
-    private int codigo;
+public class Endereco extends Salvavel {
+
     private String estado;
     private String cidade;
     private String logradouro;
     private int numero;
 
-    public Endereco(int codigo, String estado, String cidade, String logradouro, int numero){
-        validarCriacaoEndereco(codigo, estado, cidade, logradouro, numero);
-        
-        this.codigo = codigo;
+    public static Endereco criarEndereco (String estado, String cidade, String logradouro, int numero){
+        return new Endereco(estado, cidade, logradouro, numero);
+    }
+
+    public static Endereco carregarEndereco (int codigo, String estado, String cidade, String logradouro, int numero) {
+        return new Endereco(codigo, estado, cidade, logradouro, numero);
+    }
+
+    private Endereco(String estado, String cidade, String logradouro, int numero){
+        super();
+        validarCriacaoEndereco(estado, cidade, logradouro, numero);
         this.estado = estado;
         this.cidade = cidade;
         this.logradouro = logradouro;
         this.numero = numero;
     }
 
-    private void validarCriacaoEndereco(int codigo, String estado, String cidade, String logradouro, int numero){
-        if(codigo <= 0){
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        else if(estado == null || estado.isBlank()){
+    private Endereco(int codigo, String estado, String cidade, String logradouro, int numero){
+        super(codigo);
+        validarCriacaoEndereco(estado, cidade, logradouro, numero);
+        this.estado = estado;
+        this.cidade = cidade;
+        this.logradouro = logradouro;
+        this.numero = numero;
+    }
+
+    private void validarCriacaoEndereco(String estado, String cidade, String logradouro, int numero){
+        if(estado == null || estado.isBlank()){
             throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
         }
         else if(cidade == null || cidade.isBlank()){
@@ -34,10 +48,6 @@ public class Endereco {
         else if(numero <= 0){
             throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
         }
-    }
-
-    public int getCodigo(){
-        return this.codigo;
     }
 
     public String getEstado(){

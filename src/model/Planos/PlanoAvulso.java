@@ -4,8 +4,20 @@ import model.Veiculo;
 
 public class PlanoAvulso extends PlanoGratuito {
 
-    public PlanoAvulso(int codigo) {
+    public static PlanoAvulso criarPlanoAvulso(){
+        return new PlanoAvulso();
+    }
+
+    public static PlanoAvulso carregarPlanoAvulso(int codigo){
+        return new PlanoAvulso(codigo);
+    }
+
+    private PlanoAvulso(int codigo) {
         super(codigo, "Plano Avulso");
+    }
+
+    private PlanoAvulso(){
+        super("Plano Avulso");
     }
 
     @Override

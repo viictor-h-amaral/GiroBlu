@@ -4,7 +4,19 @@ import model.Veiculo;
 
 public class PlanoMensal extends PlanoPago {
 
-    public PlanoMensal(int codigo, double precoMensal) {
+    public static PlanoMensal criarPlanoMensal(double precoMensal){
+        return new PlanoMensal(precoMensal);
+    }
+
+    public static PlanoMensal carregarPlanoMensal(int codigo, double precoMensal){
+        return new PlanoMensal(codigo, precoMensal);
+    }
+
+    private PlanoMensal(double precoMensal) {
+        super("Plano Mensal", precoMensal);
+    }
+
+    private PlanoMensal(int codigo, double precoMensal) {
         super(codigo, "Plano Mensal", precoMensal);
     }
 

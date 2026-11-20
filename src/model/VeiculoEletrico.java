@@ -9,7 +9,14 @@ public abstract class VeiculoEletrico extends Veiculo{
     private int bateria;
     private int consumoPorMinuto;
 
-    public VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
+    protected VeiculoEletrico(String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
+        super(modelo, valorDesbloqueio, valorPorMinuto, estacao);
+        validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
+        this.bateria = bateria;
+        this.consumoPorMinuto = consumoPorMinuto;
+    }
+
+    protected VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
         super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
         validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
         this.bateria = bateria;
@@ -20,7 +27,7 @@ public abstract class VeiculoEletrico extends Veiculo{
         if(bateria < 0){
             throw new IllegalArgumentException("A bateria não pode ser menor que 0.");
         }
-        if(consumoPorMinuto <= 0){
+        else if(consumoPorMinuto <= 0){
             throw new IllegalArgumentException("O consumo por minuto deve ser maior que 0.");
         }
     }

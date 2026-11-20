@@ -4,10 +4,15 @@ import model.Plano;
 
 public abstract class PlanoPago extends Plano {
 
-    public PlanoPago(int codigo, String nome, double precoMensal) {
+    protected PlanoPago(String nome, double precoMensal) {
+        super(nome);
+        validarPrecoMensal(precoMensal);
+        this.precoMensal = precoMensal;
+    }
+
+    protected PlanoPago(int codigo, String nome, double precoMensal) {
         super(codigo, nome);
         validarPrecoMensal(precoMensal);
-
         this.precoMensal = precoMensal;
     }
 

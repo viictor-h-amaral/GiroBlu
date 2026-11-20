@@ -14,10 +14,26 @@ public class Estacao extends Salvavel {
     private ArrayList<Veiculo> veiculos = new ArrayList<>();
     private Endereco endereco;
 
-    public Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+    public static Estacao criarEstacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+        return new Estacao(nome, limiteVagas, estado, cidade, logradouro, numero);
+    } 
+
+    public static Estacao carregarEstacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+        return new Estacao(codigo, nome, limiteVagas, estado, cidade, logradouro, numero);
+    }
+
+    private Estacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+        super();
         validarCriacaoEstacao(nome, limiteVagas);
-        this.endereco = new Endereco(codigo, estado, cidade, logradouro, numero);
-        this.codigo = codigo;
+        this.endereco = Endereco.criarEndereco(estado, cidade, logradouro, numero);
+        this.nome = nome;
+        this.limiteVagas = limiteVagas;
+    }
+
+    private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+        super(codigo);
+        validarCriacaoEstacao(nome, limiteVagas);
+        this.endereco = Endereco.carregarEndereco(codigo, estado, cidade, logradouro, numero);
         this.nome = nome;
         this.limiteVagas = limiteVagas;
     }

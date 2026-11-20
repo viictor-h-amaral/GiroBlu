@@ -5,10 +5,24 @@ import model.Veiculo;
 
 public class PlanoUniversitario extends PlanoGratuito {
 
-    public PlanoUniversitario(int codigo, String instituicao, int matricula) {
+    public static PlanoUniversitario criarPlanoUniversitario (String instituicao, int matricula){
+        return new PlanoUniversitario(instituicao, matricula);
+    }
+
+    public static PlanoUniversitario carregarPlanoUniversitario (int codigo, String instituicao, int matricula){
+        return new PlanoUniversitario(codigo, instituicao, matricula);
+    }
+
+    private PlanoUniversitario(String instituicao, int matricula) {
+        super("Plano Universitário");
+        validarCriacaoPlanoUniversitario(instituicao, matricula);
+        this.instituicao = instituicao;
+        this.matricula = matricula;
+    }
+
+    private PlanoUniversitario(int codigo, String instituicao, int matricula) {
         super(codigo, "Plano Universitário");
         validarCriacaoPlanoUniversitario(instituicao, matricula);
-
         this.instituicao = instituicao;
         this.matricula = matricula;
     }
@@ -17,7 +31,7 @@ public class PlanoUniversitario extends PlanoGratuito {
         if (instituicao == null || instituicao.isBlank()) {
             throw new IllegalArgumentException("Instituição inválida. Não pode ser nula ou vazia.");
         }
-        if (matricula <= 0) {
+        else if (matricula <= 0) {
             throw new IllegalArgumentException("Matrícula inválida. Deve ser maior que zero.");
         }
     }

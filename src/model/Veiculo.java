@@ -17,8 +17,19 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     private double valorPorMinuto;
     private Estacao estacao;
 
-    public Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
-        validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
+    protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+        super(codigo);
+        validarCriacaoVeiculo(modelo, valorDesbloqueio, valorPorMinuto, estacao);
+        this.modelo = modelo;
+        this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
+        this.valorDesbloqueio = valorDesbloqueio;
+        this.valorPorMinuto = valorPorMinuto;
+        this.estacao = estacao;
+    }
+    
+    protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+        super();
+        validarCriacaoVeiculo(modelo, valorDesbloqueio, valorPorMinuto, estacao);
         this.modelo = modelo;
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
         this.valorDesbloqueio = valorDesbloqueio;
@@ -26,26 +37,19 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         this.estacao = estacao;
     }
 
-    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
-        if(codigo <= 0){
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
+    private void validarCriacaoVeiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
         if(modelo == null || modelo.isBlank()){
             throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
         }
-        if(valorDesbloqueio < 0){
+        else if(valorDesbloqueio < 0){
             throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
         }
-        if(valorPorMinuto < 0){
+        else if(valorPorMinuto < 0){
             throw new IllegalArgumentException("Valor por minuto inválido. Deve ser maior que zero.");
         }
-        if(estacao == null){
+        else if(estacao == null){
             throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
         }
-    }
-
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
     }
 
     public String getModelo() {
