@@ -118,8 +118,8 @@ public abstract class Veiculo implements Manutensivel{
         if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoEmUsoException();
         }
-
         this.estadoAtual = EstadoAtualVeiculo.EM_MANUTENCAO;
+        this.estacao = null;
     }
 
     @Override 
