@@ -1,8 +1,10 @@
 package model;
 
-public class BicicletaEletrica extends VeiculoEletrico{
+import exceptions.EstacaoLotadaException;
 
-    public BicicletaEletrica(int codigo, Estacao estacao){
+public class BicicletaEletrica extends VeiculoEletrico {
+
+    public BicicletaEletrica(int codigo, Estacao estacao) throws EstacaoLotadaException{
         super(codigo, "Bicicleta Elétrica", 2, 0.30, 100, 1, estacao);
     }
 
