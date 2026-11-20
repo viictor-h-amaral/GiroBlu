@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
@@ -27,7 +28,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         this.estacao = estacao;
     }
     
-    protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+    protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException {
         super();
         validarCriacaoVeiculo(modelo, valorDesbloqueio, valorPorMinuto, estacao);
         this.modelo = modelo;
@@ -35,6 +36,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         this.valorDesbloqueio = valorDesbloqueio;
         this.valorPorMinuto = valorPorMinuto;
         this.estacao = estacao;
+        estacao.adicionarVeiculo(this);
     }
 
     private void validarCriacaoVeiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){

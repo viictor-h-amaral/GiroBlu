@@ -2,11 +2,11 @@ package mapper.mappers;
 
 import java.io.IOException;
 
-import auxiliares.EstadoAtualVeiculo;
 import helper.CsvHelper;
 import mapper.CsvMapper;
-import model.Estacao;
+import model.BicicletaMecanica;
 import model.Veiculo;
+import repository.repositories.EstacaoRepository;
 
 public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
@@ -40,14 +40,11 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
             throw new IOException("Campo de texto inválido");
         }
 
+        var estacaoRepository = new EstacaoRepository();
         try {
-            return new Veiculo(
+            return BicicletaMecanica.carregarBicicletaMecanica(
                     Integer.parseInt(campos[COLUNA_CODIGO]),
-                    campos[COLUNA_MODELO],
-                    EstadoAtualVeiculo.valueOf(campos[COLUNA_ESTADO_ATUAL]),
-                    Double.parseDouble(campos[COLUNA_VALOR_DESBLOQUEIO]),
-                    Double.parseDouble(campos[COLUNA_VALOR_POR_MINUTO]),
-                    //CsvHelper.stringParaCsv(entidade.getEstacao()) // aqui vai precisar do SelectOne da Estacao
+                    estacaoRepository.selectOne(Integer.parseInt(campos[COLUNA_ESTACAO]))// aqui vai precisar do SelectOne da Estacao
             );
         } catch (NumberFormatException e) {
             throw new IOException("Código ou valor inválido", e);
@@ -77,7 +74,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         if (veiculo == null) {
             throw new IllegalArgumentException("O veículo não pode ser nulo");
         }
-        if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
+        else if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
             throw new IllegalArgumentException(
                     "O campo de texto não pode conter ponto e vírgula (;), aspas (\") ou quebras de linha");
         }

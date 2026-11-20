@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import contracts.Manutensivel;
 import contracts.Salvavel;
@@ -11,15 +12,15 @@ public class Estacao extends Salvavel {
 
     private String nome;
     private int limiteVagas;
-    private ArrayList<Veiculo> veiculos = new ArrayList<>();
+    private List<Veiculo> veiculos = new ArrayList<>();
     private Endereco endereco;
 
     public static Estacao criarEstacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
         return new Estacao(nome, limiteVagas, estado, cidade, logradouro, numero);
     } 
 
-    public static Estacao carregarEstacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
-        return new Estacao(codigo, nome, limiteVagas, estado, cidade, logradouro, numero);
+    public static Estacao carregarEstacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero, List<Veiculo> veiculos){
+        return new Estacao(codigo, nome, limiteVagas, estado, cidade, logradouro, numero, veiculos);
     }
 
     private Estacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
@@ -30,12 +31,13 @@ public class Estacao extends Salvavel {
         this.limiteVagas = limiteVagas;
     }
 
-    private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+    private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero, List<Veiculo> veiculos){
         super(codigo);
         validarCriacaoEstacao(nome, limiteVagas);
         this.endereco = Endereco.carregarEndereco(codigo, estado, cidade, logradouro, numero);
         this.nome = nome;
         this.limiteVagas = limiteVagas;
+        this.veiculos = veiculos;
     }
 
     private void validarCriacaoEstacao(String nome, int limiteVagas){
@@ -51,11 +53,18 @@ public class Estacao extends Salvavel {
         return this.nome;
     }
 
+    public void setNome(String nome){
+        if(nome == null || nome.isBlank()){
+            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
+        }
+        this.nome = nome;
+    }
+
     public int getLimiteVagas(){
         return this.limiteVagas;
     }
 
-    public ArrayList<Veiculo> getVeiculos(){
+    public List<Veiculo> getVeiculos(){
         return veiculos;
     }
     

@@ -1,21 +1,24 @@
-import model.Carteira;
-import model.Cliente;
 import model.Estacao;
-import model.PatineteEletrico;
+import repository.repositories.EstacaoRepository;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        var e1 = new Estacao(1, "null", 1, "a", "null", "null", 1);
-        var v1 = new PatineteEletrico(1, e1);
+        var repoEstacao = new EstacaoRepository();
+        var estacaoParaAtualizar = repoEstacao.selectOne(1);
+        estacaoParaAtualizar.setNome("Fortaleza updated");
+        repoEstacao.update(estacaoParaAtualizar);
+        var x = repoEstacao.selectAll();
 
-        System.out.println("Estacao: " + v1.getEstadoAtual());
-        System.out.println("Estacao: " + v1.getEstadoAtual().ordinal());
-        System.out.println("Estacao: " + v1.getEstadoAtual().name());
-
-        v1.enviarParaManutencao();
-        System.out.println("Estacao: " + v1.getEstadoAtual().ordinal());
-        v1.retornarManutencao();
-        v1.liberarParaViagem();
-        System.out.println("Estacao: " + v1.getEstadoAtual().ordinal());
+        for (Estacao ex : x) {
+            System.out.println(
+                ex.getCodigo() + " , " +
+                ex.getNome() + " , " +
+                ex.getLimiteVagas() + " , " +
+                ex.getEstado() +" , " +
+                ex.getCidade() +" , " +
+                ex.getLogradouro() + " , " +
+                ex.getNumero()
+            );
+        }
     }
 }

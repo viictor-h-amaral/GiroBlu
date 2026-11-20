@@ -1,8 +1,14 @@
 package model;
 
+import exceptions.EstacaoLotadaException;
+
 public class BicicletaMecanica extends Veiculo{
 
-    public static BicicletaMecanica criarBicicletaMecanica(Estacao estacao){
+    private static double VALOR_DESBLOQUEIO = 1;
+    private static double VALOR_POR_MINUTO = 0.15;
+    private static String MODELO = "Bicicleta Mecânica";
+
+    public static BicicletaMecanica criarBicicletaMecanica(Estacao estacao) throws EstacaoLotadaException{
         return new BicicletaMecanica(estacao);
     }
 
@@ -10,12 +16,12 @@ public class BicicletaMecanica extends Veiculo{
         return new BicicletaMecanica(codigo, estacao);
     }
 
-    private BicicletaMecanica(Estacao estacao){
-        super("Bicicleta Mecânica", 1, 0.15, estacao);
+    private BicicletaMecanica(Estacao estacao) throws EstacaoLotadaException{
+        super(MODELO, VALOR_DESBLOQUEIO, VALOR_POR_MINUTO, estacao);
     }
 
     private BicicletaMecanica(int codigo, Estacao estacao){
-        super(codigo, "Bicicleta Mecânica", 1, 0.15, estacao);
+        super(codigo, MODELO, VALOR_DESBLOQUEIO, VALOR_POR_MINUTO, estacao);
     }
 
 }

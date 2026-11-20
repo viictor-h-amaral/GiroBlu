@@ -9,7 +9,10 @@ public abstract class Salvavel {
     }
 
     public void setCodigo(Integer codigo){
-        if (codigo == null || codigo <= 0) {
+        if (this.codigo != null){
+            throw new IllegalArgumentException("Código da entidade já existe! A atribuição do código só é permitida na inserção da entidade no banco de dados.");
+        }
+        else if (codigo == null || codigo <= 0) {
             throw new IllegalArgumentException("Código deve ser maior que zero.");
         }
         this.codigo = codigo;

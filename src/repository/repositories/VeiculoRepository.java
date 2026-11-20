@@ -1,9 +1,10 @@
-package repository;
+package repository.repositories;
 
 import java.io.IOException;
 
 import mapper.mappers.VeiculoCsvMapper;
 import model.Veiculo;
+import repository.Repository;
 
 public class VeiculoRepository extends Repository<Veiculo> {
 
@@ -14,16 +15,18 @@ public class VeiculoRepository extends Repository<Veiculo> {
     @Override 
     protected String obterValorCampo(Veiculo veiculo, String campo) {
         switch (campo) {
-            case "id":
-                return String.valueOf(veiculo.getId());
-            case "marca":
-                return veiculo.getMarca();
+            case "codigo":
+                return String.valueOf(veiculo.getCodigo());
             case "modelo":
                 return veiculo.getModelo();
-            case "ano":
-                return String.valueOf(veiculo.getAno());
-            case "placa":
-                return veiculo.getPlaca();
+            case "valorDesbloqueio":
+                return String.valueOf(veiculo.getValorDesbloqueio());
+            case "valorPorMinuto":
+                return String.valueOf(veiculo.getValorPorMinuto());
+            case "estadoAtual":
+                return String.valueOf(veiculo.getEstadoAtual().ordinal());
+            case "estacao":
+                return String.valueOf(veiculo.getEstacao().getCodigo());
             default:
                 throw new IllegalArgumentException("Campo informado é inválido! Informado: " + campo);
         }
