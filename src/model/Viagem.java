@@ -27,6 +27,7 @@ public class Viagem {
         this.codigo = codigo;
         this.viajante = viajante;
         this.veiculo = veiculo;
+        this.veiculo.getEstacao().retirarVeiculo(this.veiculo);
 
         this.dataHoraInicio = LocalDateTime.now();
     }
