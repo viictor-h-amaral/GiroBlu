@@ -6,9 +6,8 @@ import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.Administrador;
 import model.Cliente;
-import model.Plano;
 import model.Usuario;
-import model.Planos.PlanoAvulso;
+import repository.repositories.PlanoRepository;
 
 
 public class UsuarioCsvMapper implements CsvMapper<Usuario>{
@@ -52,13 +51,16 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             String tipo = campos[COLUNA_TIPO];
             String nome = campos[COLUNA_NOME];
             String email = campos[COLUNA_EMAIL];
+            int codigoPlano = Integer.parseInt(campos[COLUNA_PLANO]);
             
             Usuario usuario;
             if(tipo.equals(Cliente.TIPO)){
                 boolean emViagem = Boolean.parseBoolean(campos[COLUNA_EM_VIAGEM]);
                 String cpf = campos[COLUNA_CPF];
-                //TO DO: repositorio de plano
-                Plano plano = PlanoAvulso.criarPlanoAvulso();
+                
+                var planoRepository = PlanoRepository.getInstance();
+                var plano = planoRepository.selectOne(codigoPlano);
+
                 usuario = Cliente.carregarCliente(codigo, nome, email, plano, emViagem, cpf);
             }
             else if(tipo.equals(Administrador.TIPO)){
