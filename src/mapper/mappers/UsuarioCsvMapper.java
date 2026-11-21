@@ -74,11 +74,11 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             return usuario;
     
         } catch (NumberFormatException e) {
-            throw new IOException("Código, estado, estação ou bateria inválido", e);
+            throw new IOException("Código ou Código de Acesso inválidos", e);
         } catch (IllegalArgumentException e) {
-            throw new IOException("Dados do veículo inválidos", e);
+            throw new IOException("Dados do usuário inválidos", e);
         } catch (Exception e) {
-            throw new IOException("Não foi possível carregar o veículo do Banco de dados devido a um erro: ", e);
+            throw new IOException("Não foi possível carregar o usuário do Banco de dados devido a um erro: ", e);
         }
     }
 
