@@ -17,11 +17,13 @@ public abstract class Repository<T extends Salvavel> {
 
     protected File arquivo;
     protected CsvMapper<T> mapeador;
+    private List<T> cache = null;
 
     public Repository(CsvMapper<T> mapeador, String nomeArquivo) throws IOException {
         this.mapeador = mapeador;
         CsvConnector conector = new CsvConnector(nomeArquivo, mapeador);
         arquivo = conector.getArquivo();
+        firstCharge();
     }
 
     public T selectOne(int id) throws IOException{
@@ -59,7 +61,16 @@ public abstract class Repository<T extends Salvavel> {
     }
 
     public List<T> selectAll() throws IOException {
-        List<T> entidades = new ArrayList<T>();
+        return this.cache;
+    }
+
+    private void firstCharge() throws IOException {
+
+        if (cache != null) {
+            return;
+        }
+
+        cache = new ArrayList<T>();
 
         try (BufferedReader leitor = ReaderHelper.criarLeitor(arquivo)) {
             String cabecalho = leitor.readLine();
@@ -73,14 +84,12 @@ public abstract class Repository<T extends Salvavel> {
                 numeroLinha++;
                 try {
                     T entidadeLinha = mapeador.fromCsv(linha);
-                    entidades.add(entidadeLinha);
+                    cache.add(entidadeLinha);
                 } catch (IOException e) {
                     throw new IOException("Registro inválido na linha " + numeroLinha, e);
                 }
             }
         }
-
-        return entidades;
     }
 
     public void insert(T entidade) throws IOException {

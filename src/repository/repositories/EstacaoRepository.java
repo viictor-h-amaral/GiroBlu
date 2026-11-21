@@ -8,8 +8,17 @@ import repository.Repository;
 
 public class EstacaoRepository extends Repository<Estacao> {
 
-    public EstacaoRepository() throws IOException {
+    private static EstacaoRepository instance = null;
+
+    private EstacaoRepository() throws IOException {
         super(new EstacaoCsvMapper(), "estacao.csv");
+    }
+
+    public static EstacaoRepository getInstance() throws IOException {
+        if (instance == null) {
+            instance = new EstacaoRepository();
+        }
+        return instance;
     }
 
     @Override 

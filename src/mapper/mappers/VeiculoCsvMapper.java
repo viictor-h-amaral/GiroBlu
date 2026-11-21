@@ -2,23 +2,30 @@ package mapper.mappers;
 
 import java.io.IOException;
 
+import auxiliares.EstadoAtualVeiculo;
 import helper.CsvHelper;
 import mapper.CsvMapper;
+import model.BicicletaEletrica;
 import model.BicicletaMecanica;
+import model.PatineteEletrico;
 import model.Veiculo;
+import model.VeiculoEletrico;
 import repository.repositories.EstacaoRepository;
 
 public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
     private static final String SEPARADOR = ";";
     private static final int COLUNA_CODIGO = 0;
+    private static final int COLUNA_TIPO = 1;
     private static final int COLUNA_MODELO = 2;
     private static final int COLUNA_ESTADO_ATUAL = 3;
     private static final int COLUNA_VALOR_DESBLOQUEIO = 4;
     private static final int COLUNA_VALOR_POR_MINUTO = 5;
     private static final int COLUNA_ESTACAO = 6;
-    private static final int QUANTIDADE_COLUNAS = 7;
-    private static final String CABECALHO = "codigo;modelo;estadoAtual;valorDesbloqueio;valorPorMinuto;estacao";
+    private static final int COLUNA_BATERIA = 7;
+    private static final int COLUNA_CONSUMO_POR_MINUTO = 8;
+    private static final int QUANTIDADE_COLUNAS = 9;
+    private static final String CABECALHO = "codigo;tipo;modelo;estadoAtual;valorDesbloqueio;valorPorMinuto;estacao;bateria;consumoPorMinuto";
 
     @Override
     public String getCabecalho() {
@@ -33,21 +40,46 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
         String[] campos = linha.split(SEPARADOR, -1);
         if (campos.length != QUANTIDADE_COLUNAS) {
-            throw new IOException("A linha deve conter exatamente cinco campos");
+            throw new IOException("A linha deve conter exatamente nove campos");
         }
 
         if (CsvHelper.temCaractereNaoSuportado(campos[COLUNA_MODELO])) {
             throw new IOException("Campo de texto inválido");
         }
 
-        var estacaoRepository = new EstacaoRepository();
         try {
-            return BicicletaMecanica.carregarBicicletaMecanica(
-                    Integer.parseInt(campos[COLUNA_CODIGO]),
-                    estacaoRepository.selectOne(Integer.parseInt(campos[COLUNA_ESTACAO]))// aqui vai precisar do SelectOne da Estacao
-            );
+            int codigo = Integer.parseInt(campos[COLUNA_CODIGO]);
+            int codigoEstado = Integer.parseInt(campos[COLUNA_ESTADO_ATUAL]);
+            int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
+            EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.values()[codigoEstado];
+
+            var estacaoRepository = EstacaoRepository.getInstance();
+            var estacao = estacaoRepository.selectOne(codigoEstacao);
+
+            Veiculo veiculo;
+            if (campos[COLUNA_TIPO].equals(BicicletaMecanica.MODELO)) {
+                veiculo = BicicletaMecanica.carregarBicicletaMecanica(codigo, estacao, estadoAtual);
+            } 
+            else if (campos[COLUNA_TIPO].equals(BicicletaEletrica.MODELO)) {
+                int bateriaBicicleta = Integer.parseInt(campos[COLUNA_BATERIA]);
+                veiculo = BicicletaEletrica.carregarBicicletaEletrica(codigo, bateriaBicicleta, estacao, estadoAtual);
+            }
+            else if (campos[COLUNA_TIPO].equals(PatineteEletrico.MODELO)) {
+                int bateriaPatinete = Integer.parseInt(campos[COLUNA_BATERIA]);
+                veiculo = PatineteEletrico.carregarPatineteEletrico(codigo, bateriaPatinete, estacao, estadoAtual);
+            }
+            else {
+                throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_TIPO]);
+            }
+
+            return veiculo;
+
         } catch (NumberFormatException e) {
-            throw new IOException("Código ou valor inválido", e);
+            throw new IOException("Código, estado, estação ou bateria inválido", e);
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Dados do veículo inválidos", e);
+        } catch (Exception e) {
+            throw new IOException("Não foi possível carregar o veículo do Banco de dados devido a um erro: ", e);
         }
     }
 
@@ -57,13 +89,24 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
         String[] campos = new String[QUANTIDADE_COLUNAS];
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
+        campos[COLUNA_TIPO] = Veiculo.obterTipo(entidade);
         campos[COLUNA_MODELO] = CsvHelper.stringParaCsv(entidade.getModelo());
-        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().ordinal());
+        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getEstadoAtual());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());
         campos[COLUNA_VALOR_POR_MINUTO] = String.valueOf(entidade.getValorPorMinuto());
         campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());
 
-        String linha = campos[0];
+        if (entidade instanceof VeiculoEletrico) {
+            VeiculoEletrico eletrico = (VeiculoEletrico) entidade;
+            campos[COLUNA_BATERIA] = String.valueOf(eletrico.getBateria());
+            campos[COLUNA_CONSUMO_POR_MINUTO] = String.valueOf(eletrico.getConsumoPorMinuto());
+        } 
+        else {
+            campos[COLUNA_BATERIA] = "";
+            campos[COLUNA_CONSUMO_POR_MINUTO] = "";
+        }
+
+        String linha = campos[COLUNA_CODIGO];
         for (int i = 1; i < campos.length; i++) {
             linha += SEPARADOR + campos[i];
         }

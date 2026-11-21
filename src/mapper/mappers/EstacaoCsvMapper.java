@@ -9,17 +9,17 @@ import repository.repositories.VeiculoRepository;
 
 public class EstacaoCsvMapper implements CsvMapper<Estacao>{
 
-    private static String SEPARADOR = ";";
-    private static int COLUNA_CODIGO = 0;
-    private static int COLUNA_NOME = 1;
-    private static int COLUNA_LIMITE_VAGAS = 2;
-    private static int COLUNA_ESTADO = 3;
-    private static int COLUNA_CIDADE = 4;
-    private static int COLUNA_LOGRADOURO = 5;
-    private static int COLUNA_NUMERO = 6;
+    private static final String SEPARADOR = ";";
+    private static final int COLUNA_CODIGO = 0;
+    private static final int COLUNA_NOME = 1;
+    private static final int COLUNA_LIMITE_VAGAS = 2;
+    private static final int COLUNA_ESTADO = 3;
+    private static final int COLUNA_CIDADE = 4;
+    private static final int COLUNA_LOGRADOURO = 5;
+    private static final int COLUNA_NUMERO = 6;
 
-    private static int QUANTIDADE_COLUNAS = 7;
-    private static String CABECALHO = "codigo;nome;limiteVagas;estado;cidade;logradouro;numero";
+    private static final int QUANTIDADE_COLUNAS = 7;
+    private static final String CABECALHO = "codigo;nome;limiteVagas;estado;cidade;logradouro;numero";
 
     @Override
     public String getCabecalho() {
@@ -41,7 +41,7 @@ public class EstacaoCsvMapper implements CsvMapper<Estacao>{
             throw new IOException("Campo de texto inválido");
         }
 
-        var veiculoRepository = new VeiculoRepository();
+        var veiculoRepository = VeiculoRepository.getInstance();
 
         try {
             return Estacao.carregarEstacao(
