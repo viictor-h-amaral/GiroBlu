@@ -4,6 +4,16 @@ import contracts.Salvavel;
 
 public abstract class Usuario extends Salvavel {
 
+    public static String obterTipo(Usuario usuario){
+        if(usuario instanceof Cliente){
+            return Cliente.TIPO;
+        }
+        else if(usuario instanceof Administrador){
+            return Administrador.TIPO;
+        }
+        throw new IllegalArgumentException("Tipo de usuário não encontrado.");
+    }
+
     protected Usuario(String nome, String email){
         super();
         setNome(nome);
