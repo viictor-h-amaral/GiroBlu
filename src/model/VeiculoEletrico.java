@@ -1,5 +1,6 @@
 package model;
 
+import auxiliares.EstadoAtualVeiculo;
 import exceptions.BateriaInsuficienteException;
 import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
@@ -16,8 +17,8 @@ public abstract class VeiculoEletrico extends Veiculo{
         setConsumoPorMinuto(consumoPorMinuto);
     }
 
-    protected VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
-        super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
+    protected VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao, EstadoAtualVeiculo estadoAtual){
+        super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao, estadoAtual);
         setBateria(bateria);
         setConsumoPorMinuto(consumoPorMinuto);
     }
@@ -27,17 +28,16 @@ public abstract class VeiculoEletrico extends Veiculo{
     }
 
     protected void setBateria(int bateria){
-        if(bateria < 0){
-            throw new IllegalArgumentException("A bateria não pode ser menor que 0.");
+        if(bateria < 0 || bateria > 100){
+            throw new IllegalArgumentException("A bateria deve estar entre 0 e 100.");
         }
         this.bateria = bateria;
     }
 
-    public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
+    public void recarregarBateria(Administrador administrador) throws VeiculoEmUsoException{
         enviarParaManutencao();
-        this.bateria = 100;
+        setBateria(100);
     }
-
 
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;
@@ -62,9 +62,8 @@ public abstract class VeiculoEletrico extends Veiculo{
         if (minutos < 0) {
             throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
         }
-        this.bateria = getBateria() - (minutos * getConsumoPorMinuto());
-        if(getBateria() < 0){
-            this.bateria = 0;
-        }
+        int novaBateria = getBateria() - (minutos * getConsumoPorMinuto()) < 0 ?
+                            0 : getBateria() - (minutos * getConsumoPorMinuto());
+        setBateria(novaBateria);
     }
 }

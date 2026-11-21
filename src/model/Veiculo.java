@@ -12,13 +12,27 @@ import contracts.Salvavel;
 
 public abstract class Veiculo extends Salvavel implements Manutensivel {
 
+    public static String obterTipo(Veiculo veiculo) {
+        if (veiculo instanceof PatineteEletrico) {
+            return PatineteEletrico.MODELO;
+        }
+        else if (veiculo instanceof BicicletaEletrica) {
+            return BicicletaEletrica.MODELO;
+        }
+        else if (veiculo instanceof BicicletaMecanica) {
+            return BicicletaMecanica.MODELO;
+        }
+        throw new IllegalArgumentException("Tipo de veículo inválido");
+    }
+
+
     private String modelo;
     private EstadoAtualVeiculo estadoAtual;
     private double valorDesbloqueio;
     private double valorPorMinuto;
     private Estacao estacao;
 
-    protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+    protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao, EstadoAtualVeiculo estadoAtual) {
         super(codigo);
         setModelo(modelo);
         setEstadoAtual(estadoAtual);
@@ -53,6 +67,9 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     }
 
     private void setEstadoAtual(EstadoAtualVeiculo estado){
+        if (estado == null) {
+            throw new IllegalArgumentException("Estado atual inválido. Não pode ser nulo.");
+        }
         this.estadoAtual = estado;
     }
 
