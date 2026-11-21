@@ -10,8 +10,8 @@ public class CarteiraCsvMapper implements CsvMapper<Carteira>{
     private static final String SEPARADOR = ";";
     private static final int COLUNA_CODIGO = 0;
     private static final int COLUNA_SALDO = 1;
-    private static final int QUANTIDADE_COLUNAS = 3;
-    private static final String CABECALHO = "codigo;saldo;cliente";
+    private static final int QUANTIDADE_COLUNAS = 2;
+    private static final String CABECALHO = "codigo;saldo";
 
     @Override
     public String getCabecalho() {
