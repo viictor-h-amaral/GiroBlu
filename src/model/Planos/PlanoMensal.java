@@ -4,6 +4,8 @@ import model.Veiculo;
 
 public class PlanoMensal extends PlanoPago {
 
+    public static final String NOME = "Plano Mensal";
+
     public static PlanoMensal criarPlanoMensal(double precoMensal){
         return new PlanoMensal(precoMensal);
     }
@@ -13,11 +15,11 @@ public class PlanoMensal extends PlanoPago {
     }
 
     private PlanoMensal(double precoMensal) {
-        super("Plano Mensal", precoMensal);
+        super(NOME, precoMensal);
     }
 
     private PlanoMensal(int codigo, double precoMensal) {
-        super(codigo, "Plano Mensal", precoMensal);
+        super(codigo, NOME, precoMensal);
     }
 
     @Override

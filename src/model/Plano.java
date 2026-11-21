@@ -21,7 +21,7 @@ public abstract class Plano extends Salvavel implements Tarifavel {
         return nome;
     }
 
-    public void setNome(String nome){
+    protected void setNome(String nome){
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
         }

@@ -4,6 +4,8 @@ import model.Veiculo;
 
 public class PlanoAvulso extends PlanoGratuito {
 
+    public static final String NOME = "Plano Avulso";
+
     public static PlanoAvulso criarPlanoAvulso(){
         return new PlanoAvulso();
     }
@@ -13,11 +15,11 @@ public class PlanoAvulso extends PlanoGratuito {
     }
 
     private PlanoAvulso(int codigo) {
-        super(codigo, "Plano Avulso");
+        super(codigo, NOME);
     }
 
     private PlanoAvulso(){
-        super("Plano Avulso");
+        super(NOME);
     }
 
     @Override
