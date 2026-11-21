@@ -69,7 +69,7 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             }
             else{
                 throw new IOException("Tipo de usuário inválido: " + tipo);
-            }
+            }     
 
             return usuario;
     
