@@ -2,6 +2,8 @@ package model;
 
 public class Administrador extends Usuario {
 
+    public static String TIPO = "ADMINISTRADOR";
+
     public static Administrador criarAdministrador(String nome, String email, int codigoAcesso){
         return new Administrador(nome, email, codigoAcesso);
     }

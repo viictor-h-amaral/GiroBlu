@@ -5,6 +5,8 @@ import exceptions.ViagemEmAndamentoException;
 
 public class Cliente extends Usuario {
 
+    public static String TIPO = "CLIENTE";
+
     public static Cliente criarCliente(String nome, String email, Plano plano, String cpf) {
         return new Cliente(nome, email, plano, false, cpf);
     }
