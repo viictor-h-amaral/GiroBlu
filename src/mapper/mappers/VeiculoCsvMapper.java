@@ -16,16 +16,15 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
     private static final String SEPARADOR = ";";
     private static final int COLUNA_CODIGO = 0;
-    private static final int COLUNA_TIPO = 1;
-    private static final int COLUNA_MODELO = 2;
-    private static final int COLUNA_ESTADO_ATUAL = 3;
-    private static final int COLUNA_VALOR_DESBLOQUEIO = 4;
-    private static final int COLUNA_VALOR_POR_MINUTO = 5;
-    private static final int COLUNA_ESTACAO = 6;
-    private static final int COLUNA_BATERIA = 7;
-    private static final int COLUNA_CONSUMO_POR_MINUTO = 8;
-    private static final int QUANTIDADE_COLUNAS = 9;
-    private static final String CABECALHO = "codigo;tipo;modelo;estadoAtual;valorDesbloqueio;valorPorMinuto;estacao;bateria;consumoPorMinuto";
+    private static final int COLUNA_MODELO = 1;
+    private static final int COLUNA_ESTADO_ATUAL = 2;
+    private static final int COLUNA_VALOR_DESBLOQUEIO = 3;
+    private static final int COLUNA_VALOR_POR_MINUTO = 4;
+    private static final int COLUNA_ESTACAO = 5;
+    private static final int COLUNA_BATERIA = 6;
+    private static final int COLUNA_CONSUMO_POR_MINUTO = 7;
+    private static final int QUANTIDADE_COLUNAS = 8;
+    private static final String CABECALHO = "codigo;modelo;estadoAtual;valorDesbloqueio;valorPorMinuto;estacao;bateria;consumoPorMinuto";
 
     @Override
     public String getCabecalho() {
@@ -57,19 +56,19 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
             var estacao = estacaoRepository.selectOne(codigoEstacao);
 
             Veiculo veiculo;
-            if (campos[COLUNA_TIPO].equals(BicicletaMecanica.MODELO)) {
+            if (campos[COLUNA_MODELO].equals(BicicletaMecanica.MODELO)) {
                 veiculo = BicicletaMecanica.carregarBicicletaMecanica(codigo, estacao, estadoAtual);
             } 
-            else if (campos[COLUNA_TIPO].equals(BicicletaEletrica.MODELO)) {
+            else if (campos[COLUNA_MODELO].equals(BicicletaEletrica.MODELO)) {
                 int bateriaBicicleta = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = BicicletaEletrica.carregarBicicletaEletrica(codigo, bateriaBicicleta, estacao, estadoAtual);
             }
-            else if (campos[COLUNA_TIPO].equals(PatineteEletrico.MODELO)) {
+            else if (campos[COLUNA_MODELO].equals(PatineteEletrico.MODELO)) {
                 int bateriaPatinete = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = PatineteEletrico.carregarPatineteEletrico(codigo, bateriaPatinete, estacao, estadoAtual);
             }
             else {
-                throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_TIPO]);
+                throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_MODELO]);
             }
 
             if (estacao != null) {
@@ -93,7 +92,6 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
 
         String[] campos = new String[QUANTIDADE_COLUNAS];
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
-        campos[COLUNA_TIPO] = Veiculo.obterTipo(entidade);
         campos[COLUNA_MODELO] = CsvHelper.stringParaCsv(entidade.getModelo());
         campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getEstadoAtual());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());

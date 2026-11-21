@@ -40,8 +40,6 @@ public class VeiculoRepository extends Repository<Veiculo> {
                 return String.valueOf(veiculo.getEstadoAtual().getEstadoAtual());
             case "estacao":
                 return String.valueOf(veiculo.getEstacao().getCodigo());
-            case "tipo":
-                return Veiculo.obterTipo(veiculo);
             case "bateria":
                 if (veiculo instanceof VeiculoEletrico) {
                     return String.valueOf(((VeiculoEletrico) veiculo).getBateria());
