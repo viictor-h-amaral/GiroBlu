@@ -1,6 +1,7 @@
 package model;
 
 import exceptions.BateriaInsuficienteException;
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 
@@ -9,7 +10,7 @@ public abstract class VeiculoEletrico extends Veiculo{
     private int bateria;
     private int consumoPorMinuto;
 
-    public VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao){
+    public VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao) throws EstacaoLotadaException{
         super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
         validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
         this.bateria = bateria;

@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
@@ -17,7 +18,7 @@ public abstract class Veiculo implements Manutensivel{
     private double valorPorMinuto;
     private Estacao estacao;
 
-    public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) {
+    public Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException{
         validarCriacaoVeiculo(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao);
         this.codigo = codigo;
         this.modelo = modelo;
@@ -25,23 +26,27 @@ public abstract class Veiculo implements Manutensivel{
         this.valorDesbloqueio = valorDesbloqueio;
         this.valorPorMinuto = valorPorMinuto;
         this.estacao = estacao;
+        this.estacao.adicionarVeiculo(this);
     }
 
-    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao){
+    private void validarCriacaoVeiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException{
         if(codigo <= 0){
             throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
         }
-        if(modelo == null || modelo.isBlank()){
+        else if(modelo == null || modelo.isBlank()){
             throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
         }
-        if(valorDesbloqueio < 0){
+        else if(valorDesbloqueio < 0){
             throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
         }
-        if(valorPorMinuto < 0){
+        else if(valorPorMinuto < 0){
             throw new IllegalArgumentException("Valor por minuto inválido. Deve ser maior que zero.");
         }
-        if(estacao == null){
+        else if(estacao == null){
             throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
+        }
+        else if(estacao.isLotada()){
+            throw new EstacaoLotadaException(estacao.getNome(), estacao.getLimiteVagas());
         }
     }
 
@@ -80,10 +85,17 @@ public abstract class Veiculo implements Manutensivel{
         this.estadoAtual = EstadoAtualVeiculo.EM_VIAGEM;
     }
 
-    public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void validarRetornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
             throw new VeiculoNaoEmViagemException();
         }
+        else if(estacao.isLotada()){
+            throw new EstacaoLotadaException(estacao.getNome(), estacao.getLimiteVagas());
+        }
+    }
+
+    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+        validarRetornarViagem(estacao);
         this.estadoAtual = EstadoAtualVeiculo.DISPONIVEL;
     }
 
@@ -106,8 +118,8 @@ public abstract class Veiculo implements Manutensivel{
         if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
             throw new VeiculoEmUsoException();
         }
-
         this.estadoAtual = EstadoAtualVeiculo.EM_MANUTENCAO;
+        this.estacao = null;
     }
 
     @Override 
