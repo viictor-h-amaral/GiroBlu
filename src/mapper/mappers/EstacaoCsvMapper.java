@@ -77,7 +77,7 @@ public class EstacaoCsvMapper implements CsvMapper<Estacao>{
 
     private void validarEstacao(Estacao estacao){
         if (estacao == null) {
-            throw new IllegalArgumentException("O veículo não pode ser nulo");
+            throw new IllegalArgumentException("A estação não pode ser nulo");
         }
         else if (CsvHelper.temCaractereNaoSuportado(estacao.getNome())
                 || CsvHelper.temCaractereNaoSuportado(estacao.getLogradouro())
