@@ -61,7 +61,11 @@ public abstract class Repository<T extends Salvavel> {
     }
 
     public List<T> selectAll() throws IOException {
-        return this.cache;
+        return getCache();
+    }
+
+    private List<T> getCache(){
+        return cache;
     }
 
     private void firstCharge() throws IOException {
@@ -97,7 +101,7 @@ public abstract class Repository<T extends Salvavel> {
             throw new IllegalArgumentException("O registro não pode ser nulo");
         }
 
-        List<T> entidades = selectAll();
+        List<T> entidades = getCache();
         int maiorId = 0;
         for (T e : entidades) {
             if (e.getCodigo() > maiorId) {
@@ -108,7 +112,7 @@ public abstract class Repository<T extends Salvavel> {
         entidade.setCodigo(maiorId + 1);
 
         entidades.add(entidade);
-        gravarArquivo(entidades);
+        gravarArquivo();
     }
 
     public void update(T entidade) throws IOException{
@@ -116,7 +120,7 @@ public abstract class Repository<T extends Salvavel> {
             throw new IllegalArgumentException("O registro não pode ser nulo");
         }
 
-        List<T> entidades = selectAll();
+        List<T> entidades = getCache();
         boolean encontrado = false;
         for (int i = 0; i < entidades.size(); i++) {
             if (entidades.get(i).getCodigo() == entidade.getCodigo()) {
@@ -129,11 +133,11 @@ public abstract class Repository<T extends Salvavel> {
         if (!encontrado) {
             throw new IOException("Registro não encontrado: " + entidade.getCodigo());
         }
-        gravarArquivo(entidades);
+        gravarArquivo();
     }
 
     public void delete(int id) throws IOException {
-        List<T> entidades = selectAll();
+        List<T> entidades = getCache();
         boolean removido = false;
         for (int i = 0; i < entidades.size(); i++) {
             if (entidades.get(i).getCodigo() == id) {
@@ -146,12 +150,12 @@ public abstract class Repository<T extends Salvavel> {
         if (!removido) {
             throw new IOException("Registro não encontrado: " + id);
         }
-        gravarArquivo(entidades);
+        gravarArquivo();
     }
 
-    private void gravarArquivo(List<T> entidades) throws IOException {
+    private void gravarArquivo() throws IOException {
         List<String> linhas = new ArrayList<String>();
-        for (T entidade : entidades) {
+        for (T entidade : getCache()) {
             linhas.add(mapeador.toCsv(entidade));
         }
 
