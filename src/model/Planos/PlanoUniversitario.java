@@ -5,6 +5,8 @@ import model.Veiculo;
 
 public class PlanoUniversitario extends PlanoGratuito {
 
+    public static final String NOME = "Plano Universitário";
+
     public static PlanoUniversitario criarPlanoUniversitario (String instituicao, int matricula){
         return new PlanoUniversitario(instituicao, matricula);
     }
@@ -14,13 +16,13 @@ public class PlanoUniversitario extends PlanoGratuito {
     }
 
     private PlanoUniversitario(String instituicao, int matricula) {
-        super("Plano Universitário");
+        super(NOME);
         this.instituicao = instituicao;
         this.matricula = matricula;
     }
 
     private PlanoUniversitario(int codigo, String instituicao, int matricula) {
-        super(codigo, "Plano Universitário");
+        super(codigo, NOME);
         this.instituicao = instituicao;
         this.matricula = matricula;
     }
