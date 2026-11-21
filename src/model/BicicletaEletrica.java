@@ -5,10 +5,10 @@ import exceptions.EstacaoLotadaException;
 
 public class BicicletaEletrica extends VeiculoEletrico{
 
-    private static double VALOR_DESBLOQUEIO = 2;
-    private static double VALOR_POR_MINUTO = 0.3;
-    private static int CONSUMO_POR_MINUTO = 1;
-    public static String MODELO = "Bicicleta Elétrica";
+    private static final double VALOR_DESBLOQUEIO = 2;
+    private static final double VALOR_POR_MINUTO = 0.3;
+    private static final int CONSUMO_POR_MINUTO = 1;
+    public static final String MODELO = "Bicicleta Elétrica";
 
     public static BicicletaEletrica criarBicicletaEletrica(Estacao estacao) throws EstacaoLotadaException{
         return new BicicletaEletrica(estacao);

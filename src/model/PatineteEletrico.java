@@ -5,10 +5,10 @@ import exceptions.EstacaoLotadaException;
 
 public class PatineteEletrico extends VeiculoEletrico{
 
-    private static double VALOR_DESBLOQUEIO = 3;
-    private static double VALOR_POR_MINUTO = 0.4;
-    private static int CONSUMO_POR_MINUTO = 2;
-    public static String MODELO = "Patinete Elétrico";
+    private static final double VALOR_DESBLOQUEIO = 3;
+    private static final double VALOR_POR_MINUTO = 0.4;
+    private static final int CONSUMO_POR_MINUTO = 2;
+    public static final String MODELO = "Patinete Elétrico";
 
     public static PatineteEletrico criarPatineteEletrico(Estacao estacao) throws EstacaoLotadaException{
         return new PatineteEletrico(estacao);

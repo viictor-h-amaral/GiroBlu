@@ -5,9 +5,9 @@ import exceptions.EstacaoLotadaException;
 
 public class BicicletaMecanica extends Veiculo{
 
-    private static double VALOR_DESBLOQUEIO = 1;
-    private static double VALOR_POR_MINUTO = 0.15;
-    public static String MODELO = "Bicicleta Mecânica";
+    private static final double VALOR_DESBLOQUEIO = 1;
+    private static final double VALOR_POR_MINUTO = 0.15;
+    public static final String MODELO = "Bicicleta Mecânica";
 
     public static BicicletaMecanica criarBicicletaMecanica(Estacao estacao) throws EstacaoLotadaException{
         return new BicicletaMecanica(estacao);
