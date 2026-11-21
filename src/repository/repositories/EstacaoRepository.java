@@ -8,10 +8,12 @@ import repository.Repository;
 
 public class EstacaoRepository extends Repository<Estacao> {
 
+    private static final String NOME_ARQUIVO = "estacao.csv";
+
     private static EstacaoRepository instance = null;
 
     private EstacaoRepository() throws IOException {
-        super(new EstacaoCsvMapper(), "estacao.csv");
+        super(new EstacaoCsvMapper(), NOME_ARQUIVO);
     }
 
     public static EstacaoRepository getInstance() throws IOException {

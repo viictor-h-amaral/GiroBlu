@@ -9,10 +9,13 @@ import repository.Repository;
 
 public class VeiculoRepository extends Repository<Veiculo> {
 
+    private static final String NOME_ARQUIVO = "veiculos.csv";
+    private static final String COLUNA_VAZIA = "";
+
     private static VeiculoRepository instance = null;
 
     private VeiculoRepository() throws IOException {
-        super(new VeiculoCsvMapper(), "veiculos.csv");
+        super(new VeiculoCsvMapper(), NOME_ARQUIVO);
     }
 
     public static VeiculoRepository getInstance() throws IOException {
@@ -43,12 +46,12 @@ public class VeiculoRepository extends Repository<Veiculo> {
                 if (veiculo instanceof VeiculoEletrico) {
                     return String.valueOf(((VeiculoEletrico) veiculo).getBateria());
                 }
-                return "";
+                return COLUNA_VAZIA;
             case "consumoPorMinuto":
                 if (veiculo instanceof VeiculoEletrico) {
                     return String.valueOf(((VeiculoEletrico) veiculo).getConsumoPorMinuto());
                 }
-                return "";
+                return COLUNA_VAZIA;
             default:
                 throw new IllegalArgumentException("Campo informado é inválido! Informado: " + campo);
         }

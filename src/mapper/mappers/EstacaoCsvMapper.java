@@ -5,7 +5,6 @@ import java.io.IOException;
 import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.Estacao;
-import repository.repositories.VeiculoRepository;
 
 public class EstacaoCsvMapper implements CsvMapper<Estacao>{
 
@@ -41,8 +40,6 @@ public class EstacaoCsvMapper implements CsvMapper<Estacao>{
             throw new IOException("Campo de texto inválido");
         }
 
-        var veiculoRepository = VeiculoRepository.getInstance();
-
         try {
             return Estacao.carregarEstacao(
                     Integer.parseInt(campos[COLUNA_CODIGO]),
@@ -51,8 +48,7 @@ public class EstacaoCsvMapper implements CsvMapper<Estacao>{
                     campos[COLUNA_ESTADO],
                     campos[COLUNA_CIDADE],
                     campos[COLUNA_LOGRADOURO],
-                    Integer.parseInt(campos[COLUNA_NUMERO]),
-                    veiculoRepository.selectMany("estacao", campos[COLUNA_CODIGO])
+                    Integer.parseInt(campos[COLUNA_NUMERO])
             );
         } catch (Exception e) {
             throw new IOException("Não foi possível carregar a Estação do Banco de dados devido a: ", e);

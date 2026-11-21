@@ -1,24 +1,14 @@
 import model.Estacao;
-import repository.repositories.EstacaoRepository;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        var repoEstacao = new EstacaoRepository();
-        var estacaoParaAtualizar = repoEstacao.selectOne(1);
-        estacaoParaAtualizar.setNome("Fortaleza updated");
-        repoEstacao.update(estacaoParaAtualizar);
-        var x = repoEstacao.selectAll();
+        var estacao = Estacao.criarEstacao("Estação Central", 10, "SP", "São Paulo", "Rua A", 123);
 
-        for (Estacao ex : x) {
-            System.out.println(
-                ex.getCodigo() + " , " +
-                ex.getNome() + " , " +
-                ex.getLimiteVagas() + " , " +
-                ex.getEstado() +" , " +
-                ex.getCidade() +" , " +
-                ex.getLogradouro() + " , " +
-                ex.getNumero()
-            );
-        }
+        System.out.println(estacao.getCodigo());
+
+        var repo = repository.repositories.EstacaoRepository.getInstance();
+        repo.insert(estacao);
+
+        System.out.println(estacao.getCodigo());
     }
 }

@@ -19,8 +19,8 @@ public class Estacao extends Salvavel {
         return new Estacao(nome, limiteVagas, estado, cidade, logradouro, numero);
     } 
 
-    public static Estacao carregarEstacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero, List<Veiculo> veiculos){
-        return new Estacao(codigo, nome, limiteVagas, estado, cidade, logradouro, numero, veiculos);
+    public static Estacao carregarEstacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
+        return new Estacao(codigo, nome, limiteVagas, estado, cidade, logradouro, numero);
     }
 
     private Estacao(String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
@@ -30,12 +30,11 @@ public class Estacao extends Salvavel {
         setLimiteVagas(limiteVagas);
     }
 
-    private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero, List<Veiculo> veiculos){
+    private Estacao(int codigo, String nome, int limiteVagas, String estado, String cidade, String logradouro, int numero){
         super(codigo);
         this.endereco = Endereco.carregarEndereco(codigo, estado, cidade, logradouro, numero);
         setNome(nome);
         setLimiteVagas(limiteVagas);
-        this.veiculos = veiculos;
     }
 
     public String getNome(){

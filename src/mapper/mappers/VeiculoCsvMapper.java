@@ -72,6 +72,10 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
                 throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_TIPO]);
             }
 
+            if (estacao != null) {
+                estacao.adicionarVeiculo(veiculo);
+            }
+
             return veiculo;
 
         } catch (NumberFormatException e) {
