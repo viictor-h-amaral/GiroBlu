@@ -1,32 +1,31 @@
 package model;
 
+import contracts.Salvavel;
 import contracts.Tarifavel;
 
-public abstract class Plano implements Tarifavel {
+public abstract class Plano extends Salvavel implements Tarifavel {
 
-    public Plano(int codigo, String nome){
-        validarCriacaoPlano(codigo, nome);
-        this.codigo = codigo;
-        this.nome = nome;
+    protected Plano(String nome){
+        super();
+        setNome(nome);
     }
 
-    private void validarCriacaoPlano(int codigo, String nome) {
-        if (codigo <= 0) {
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
-        }
-    }
-
-    private int codigo;
-    public int getCodigo() {
-        return codigo;
+    protected Plano(int codigo, String nome){
+        super(codigo);
+        setNome(nome);
     }
 
     private String nome;
+
     public String getNome() {
         return nome;
+    }
+
+    protected void setNome(String nome){
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("Nome inválido. Não pode ser nulo ou vazio.");
+        }
+        this.nome = nome;
     }
 
     public abstract double calcularMensalidade(); 

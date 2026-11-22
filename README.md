@@ -71,13 +71,42 @@ Nós utilizamos uma esteira simplificada de Git para simular o ambiente profissi
 
 ```text
 GiroBlu/
-├── .vscode/             # Configurações da IDE
-├── lib/                 # Dependências (.jar do JUnit 6)
+├── .vscode/                    # Configurações da IDE
+├── lib/                        # Dependências (.jar do JUnit 6)
+├── database/                   # Arquivos CSV gerados em tempo de execução
+│   ├── carteiras.csv
+│   ├── estacoes.csv
+│   ├── planos.csv
+│   ├── usuarios.csv
+│   └── veiculos.csv
 ├── src/
-│   ├── model/           # Camada de Negócio (Entidades, Exceções, Planos, Veículos)
-│   ├── persistence/     # Leitura e Escrita de Arquivos (CSV/Binário)
-│   └── Main.java        # Ponto de entrada da aplicação
-├── docs/                # Diagrama UML em PDF e Plano de Testes
+│   ├── auxiliares/             # Enumerações e tipos auxiliares de domínio
+│   │   └── EstadoAtualVeiculo.java
+│   ├── contracts/              # Interfaces do sistema (Manutensivel, Salvavel, Tarifavel)
+│   ├── db_connector/           # Conexão com o sistema de arquivos CSV
+│   │   └── CsvConnector.java   # Cria e localiza os arquivos CSV em database/
+│   ├── exceptions/             # Exceções customizadas de domínio
+│   ├── helper/                 # Utilitários de I/O (CsvHelper, ReaderHelper, WriterHelper)
+│   ├── mapper/                 # Serialização e desserialização CSV
+│   │   ├── CsvMapper.java      # Interface genérica de mapeamento
+│   │   └── mappers/            # Implementações por entidade
+│   │       ├── CarteiraCsvMapper.java
+│   │       ├── EstacaoCsvMapper.java
+│   │       ├── PlanosCsvMapper.java
+│   │       ├── UsuarioCsvMapper.java
+│   │       └── VeiculoCsvMapper.java
+│   ├── model/                  # Entidades de domínio (Usuário, Veículo, Estação, Planos…)
+│   │   └── Planos/             # Hierarquia de planos (Avulso, Gratuito, Mensal, Pago, Universitário)
+│   ├── repository/             # Camada de acesso a dados
+│   │   ├── Repository.java     # Repositório genérico com cache em memória e CRUD completo
+│   │   └── repositories/       # Repositórios concretos por entidade
+│   │       ├── CarteiraRepository.java
+│   │       ├── EstacaoRepository.java
+│   │       ├── PlanoRepository.java
+│   │       ├── UsuarioRepository.java
+│   │       └── VeiculoRepository.java
+│   └── Main.java               # Ponto de entrada da aplicação
+├── docs/                       # Diagrama UML em PDF e Plano de Testes
 ├── .gitignore
 └── README.md
 ```
