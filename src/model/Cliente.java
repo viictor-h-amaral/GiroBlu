@@ -26,7 +26,7 @@ public class Cliente extends Usuario {
     private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf, Carteira carteira) {
         super(codigo, nome, email);
         atualizarPlano(plano);
-        this.carteira = carteira;
+        setCarteira(carteira);
         setCpf(cpf);
         this.emViagem = emViagem;
     }
@@ -35,6 +35,13 @@ public class Cliente extends Usuario {
 
     public Carteira getCarteira() {
         return carteira;
+    }
+
+    private void setCarteira(Carteira carteira){
+        if(carteira == null || carteira.getCodigo() == null){
+            throw new IllegalArgumentException("Nova carteira inválida. Não pode ser nula.");
+        }
+        this.carteira = carteira;
     }
 
     private Plano plano;
