@@ -3,11 +3,13 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import contracts.Salvavel;
 import exceptions.EstacaoLotadaException;
+import exceptions.PeriodoInvalidoException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoNaoEmViagemException;
 
-public class Viagem {
+public class Viagem extends Salvavel{
 
     private int codigo;
     private LocalDateTime dataHoraInicio;
@@ -15,63 +17,77 @@ public class Viagem {
     private Cliente viajante;
     private Veiculo veiculo;
 
-    public Viagem(int codigo, Cliente viajante, Veiculo veiculo) throws ProblemaViagemException {
-        validarCriacaoViagem(codigo, viajante, veiculo);
+    public static Viagem criarViagem(Cliente viajante, Veiculo veiculo){
+        return new Viagem(viajante, veiculo);
+    }
 
-        viajante.validarLiberarParaViagem();
-        veiculo.validarLiberarParaViagem();
+    public static Viagem carregarViagem(int codigo, Cliente viajante, Veiculo veiculo, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal){
+        return new Viagem(codigo, viajante, veiculo, dataHoraInicio, dataHoraFinal);
+    }
 
-        viajante.liberarParaViagem();
-        veiculo.liberarParaViagem();
-        
-        this.codigo = codigo;
-        this.viajante = viajante;
-        this.veiculo = veiculo;
-        this.veiculo.getEstacao().retirarVeiculo(this.veiculo);
-
+    private Viagem(Cliente viajante, Veiculo veiculo){
+        super();
+        setViajante(viajante);
+        setVeiculo(veiculo);
         this.dataHoraInicio = LocalDateTime.now();
     }
 
-    private void validarCriacaoViagem(int codigo, Cliente viajante, Veiculo veiculo){
-        if(codigo <= 0){
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        else if(viajante == null){
-            throw new IllegalArgumentException("Viajante inválido. O usuário não pode ser nulo.");
-        }
-        else if(veiculo == null){
-            throw new IllegalArgumentException("Veículo inválido. O veículo não pode ser nulo.");
-        }
-    }
-
-    public int getCodigo() {
-        return this.codigo;
+    private Viagem(int codigo, Cliente viajante, Veiculo veiculo, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal){
+        super(codigo);
+        setViajante(viajante);
+        setVeiculo(veiculo);
+        setDataHoraInicio(dataHoraInicio);
     }
 
     public LocalDateTime getDataHoraInicio() {
         return this.dataHoraInicio;
     }
 
+    public void setDataHoraInicio(LocalDateTime dataHoraInicio){
+        if(dataHoraInicio == null){
+            throw new IllegalArgumentException("Data e hora de início inválidos. Não pode ser nulo");
+        }
+    }
+
     public LocalDateTime getDataHoraFinal() {
         return this.dataHoraFinal;
+    }
+
+    public void setDataHoraFinal() throws PeriodoInvalidoException{
+        if(LocalDateTime.now().isBefore(this.dataHoraInicio)){
+            throw new PeriodoInvalidoException();
+        }
+        this.dataHoraFinal = LocalDateTime.now();
     }
 
     public Cliente getViajante() {
         return this.viajante;
     }
 
+    public void setViajante(Usuario viajante){
+        if(viajante == null || viajante.getCodigo() == null){
+            throw new IllegalArgumentException("Viajante inválido. O usuário não pode ser nulo.");
+        }
+    }
+
     public Veiculo getVeiculo() {
         return this.veiculo;
     }
 
-    public void finalizarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, VeiculoNaoEmViagemException, EstacaoLotadaException{ 
+    public void setVeiculo(Veiculo veiculo){
+        if(veiculo == null || veiculo.getCodigo() == null){
+            throw new IllegalArgumentException("Veículo inválido. O veículo não pode ser nulo.");
+        }
+    }
+
+    public void finalizarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, VeiculoNaoEmViagemException, EstacaoLotadaException, PeriodoInvalidoException{ 
         getVeiculo().validarRetornarViagem(estacao);
         getViajante().validarFinalizarViagem();
         
         retornarViagemVeiculo(estacao);
         getViajante().finalizarViagem();
-        
-        this.dataHoraFinal = LocalDateTime.now();
+
+        setDataHoraFinal();
     }
 
     private void retornarViagemVeiculo(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
