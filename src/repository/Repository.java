@@ -64,7 +64,7 @@ public abstract class Repository<T extends Salvavel> {
         return getCache();
     }
 
-    private List<T> getCache(){
+    protected List<T> getCache(){
         return cache;
     }
 
@@ -153,7 +153,7 @@ public abstract class Repository<T extends Salvavel> {
         gravarArquivo();
     }
 
-    private void gravarArquivo() throws IOException {
+    protected void gravarArquivo() throws IOException {
         List<String> linhas = new ArrayList<String>();
         for (T entidade : getCache()) {
             linhas.add(mapeador.toCsv(entidade));

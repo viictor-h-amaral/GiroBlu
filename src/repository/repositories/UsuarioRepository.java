@@ -69,4 +69,16 @@ public class UsuarioRepository extends Repository<Usuario>{
                 throw new IllegalArgumentException("Campo informado é inválido! Informado: " + campo);
         }
     }
+
+    @Override 
+    public void insert(Usuario entidade) throws IOException {
+        if(entidade instanceof Cliente){
+            var cliente = (Cliente) entidade;
+            var carteiraRepo = CarteiraRepository.getInstance();
+            var carteira = cliente.getCarteira();
+            carteiraRepo.insert(carteira);
+        }
+
+        super.insert(entidade);
+    }
 }

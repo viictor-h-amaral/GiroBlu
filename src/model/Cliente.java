@@ -11,8 +11,8 @@ public class Cliente extends Usuario {
         return new Cliente(nome, email, plano, false, cpf);
     }
 
-    public static Cliente carregarCliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
-        return new Cliente(codigo, nome, email, plano, emViagem, cpf);
+    public static Cliente carregarCliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf, Carteira carteira) {
+        return new Cliente(codigo, nome, email, plano, emViagem, cpf, carteira);
     }
 
     private Cliente(String nome, String email, Plano plano, boolean emViagem, String cpf) {
@@ -23,10 +23,10 @@ public class Cliente extends Usuario {
         this.emViagem = emViagem;
     }
 
-    private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
+    private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf, Carteira carteira) {
         super(codigo, nome, email);
         atualizarPlano(plano);
-        this.carteira = Carteira.carregarCarteira(codigo, 0.0);
+        this.carteira = carteira;
         setCpf(cpf);
         this.emViagem = emViagem;
     }
@@ -87,7 +87,7 @@ public class Cliente extends Usuario {
     }
 
     public void atualizarPlano(Plano novoPlano) {
-        if (novoPlano == null) {
+        if (novoPlano == null || novoPlano.getCodigo() == null) {
             throw new IllegalArgumentException("Novo plano inválido. Não pode ser nulo.");
         }
         else if (novoPlano.equals(plano)) {
