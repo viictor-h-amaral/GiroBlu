@@ -26,7 +26,7 @@ public class CarteiraCsvMapper implements CsvMapper<Carteira>{
 
         String[] campos = linha.split(SEPARADOR, -1);
         if (campos.length != QUANTIDADE_COLUNAS) {
-            throw new IOException("A linha deve conter exatamente cinco campos");
+            throw new IOException("A linha deve conter exatamente " + QUANTIDADE_COLUNAS + " campos");
         }
 
         try {

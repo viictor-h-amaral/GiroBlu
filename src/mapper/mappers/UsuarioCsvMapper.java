@@ -39,7 +39,7 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
 
         String[] campos = linha.split(SEPARADOR, -1);
         if(campos.length != QUANTIDADE_COLUNAS){
-            throw new IOException("A linha deve conter exatamente oito campos");
+            throw new IOException("A linha deve conter exatamente " + QUANTIDADE_COLUNAS + " campos");
         }
 
         if(CsvHelper.temCaractereNaoSuportado(campos[COLUNA_NOME]) 
