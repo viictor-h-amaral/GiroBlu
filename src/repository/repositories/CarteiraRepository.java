@@ -34,4 +34,16 @@ private static final String NOME_ARQUIVO = "carteiras.csv";
                 throw new IllegalArgumentException("Campo informado é inválido! Informado: " + campo);
         }
     }
+
+    @Override 
+    public void delete(int codigo) throws IOException{
+        var usuarioRepo = UsuarioRepository.getInstance();
+        boolean existeClienteAssociado = !usuarioRepo.selectMany("carteira", String.valueOf(codigo)).isEmpty();
+        
+        if (existeClienteAssociado){
+            throw new IllegalStateException("Não é possível excluir a carteira de código " + codigo + ", pois há usuário associado à ela. Delete o usuário primeiro!");
+        }
+
+        super.delete(codigo);
+    }
 }

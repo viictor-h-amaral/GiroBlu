@@ -59,6 +59,12 @@ public class UsuarioRepository extends Repository<Usuario>{
                 }
                 return COLUNA_VAZIA;
 
+            case "carteira":
+                if(usuario instanceof Cliente){
+                    return String.valueOf(((Cliente) usuario).getCarteira().getCodigo());
+                }
+                return COLUNA_VAZIA;
+
             case "codigoAcesso":
                 if(usuario instanceof Administrador){
                     return String.valueOf(((Administrador) usuario).getCodigoAcesso());
@@ -80,5 +86,18 @@ public class UsuarioRepository extends Repository<Usuario>{
         }
 
         super.insert(entidade);
+    }
+
+    @Override
+    public void delete(int codigo) throws IOException{
+        var usuario = selectOne(codigo);
+        super.delete(codigo);
+        
+        if (!(usuario instanceof Cliente)){
+            return;
+        }
+
+        int codigoCarteira = ((Cliente) usuario).getCarteira().getCodigo();
+        CarteiraRepository.getInstance().delete(codigoCarteira);        
     }
 }
