@@ -5,6 +5,7 @@ import java.io.IOException;
 import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.Plano;
+import model.Veiculo;
 import model.Planos.PlanoAvulso;
 import model.Planos.PlanoMensal;
 import model.Planos.PlanoPago;
@@ -69,6 +70,8 @@ public class PlanosCsvMapper implements CsvMapper<Plano> {
 
     @Override 
     public String toCsv(Plano entidade) {
+        validarPlano(entidade);
+
         String[] campos = new String[QUANTIDADE_COLUNAS];
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
         campos[COLUNA_NOME] = CsvHelper.stringParaCsv(entidade.getNome());
@@ -87,5 +90,23 @@ public class PlanosCsvMapper implements CsvMapper<Plano> {
         }
 
         return String.join(SEPARADOR, campos);
+    }
+
+    private void validarPlano(Plano plano) {
+        if (plano == null) {
+            throw new IllegalArgumentException("O veículo não pode ser nulo");
+        }
+        else if (CsvHelper.temCaractereNaoSuportado(plano.getNome())) {
+            throw new IllegalArgumentException(
+                "O campo de texto não pode conter ponto e vírgula (;), aspas (\") ou quebras de linha");
+        }
+        else if (plano instanceof PlanoUniversitario){
+            var universitario = (PlanoUniversitario) plano;
+            if (CsvHelper.temCaractereNaoSuportado(universitario.getNome())){
+                throw new IllegalArgumentException(
+                    "O campo de texto não pode conter ponto e vírgula (;), aspas (\") ou quebras de linha");
+        
+            }
+        }
     }
 }
