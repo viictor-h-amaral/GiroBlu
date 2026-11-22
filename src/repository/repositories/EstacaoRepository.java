@@ -8,7 +8,7 @@ import repository.Repository;
 
 public class EstacaoRepository extends Repository<Estacao> {
 
-    private static final String NOME_ARQUIVO = "estacao.csv";
+    private static final String NOME_ARQUIVO = "estacoes.csv";
 
     private static EstacaoRepository instance = null;
 

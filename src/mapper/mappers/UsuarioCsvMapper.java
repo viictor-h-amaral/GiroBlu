@@ -7,6 +7,7 @@ import mapper.CsvMapper;
 import model.Administrador;
 import model.Cliente;
 import model.Usuario;
+import repository.repositories.CarteiraRepository;
 import repository.repositories.PlanoRepository;
 
 
@@ -20,9 +21,10 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
     private static final int COLUNA_PLANO = 4;
     private static final int COLUNA_EM_VIAGEM = 5;
     private static final int COLUNA_CPF = 6;
-    private static final int COLUNA_CODIGO_ACESSO = 7;
-    private static final int QUANTIDADE_COLUNAS = 8;
-    private static final String CABECALHO = "codigo;tipo;nome;email;plano;emViagem;cpf;codigoAcesso";
+    private static final int COLUNA_CARTEIRA = 7;
+    private static final int COLUNA_CODIGO_ACESSO = 8;
+    private static final int QUANTIDADE_COLUNAS = 9;
+    private static final String CABECALHO = "codigo;tipo;nome;email;plano;emViagem;cpf;carteira;codigoAcesso";
 
     @Override 
     public String getCabecalho(){
@@ -51,7 +53,6 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             String tipo = campos[COLUNA_TIPO];
             String nome = campos[COLUNA_NOME];
             String email = campos[COLUNA_EMAIL];
-            int codigoPlano = Integer.parseInt(campos[COLUNA_PLANO]);
             
             Usuario usuario;
             if(tipo.equals(Cliente.TIPO)){
@@ -59,9 +60,14 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
                 String cpf = campos[COLUNA_CPF];
                 
                 var planoRepository = PlanoRepository.getInstance();
+                int codigoPlano = Integer.parseInt(campos[COLUNA_PLANO]);
                 var plano = planoRepository.selectOne(codigoPlano);
+    
+                var carteiraRepository = CarteiraRepository.getInstance();
+                int codigoCarteira = Integer.parseInt(campos[COLUNA_CARTEIRA]);
+                var carteira = carteiraRepository.selectOne(codigoCarteira);
 
-                usuario = Cliente.carregarCliente(codigo, nome, email, plano, emViagem, cpf);
+                usuario = Cliente.carregarCliente(codigo, nome, email, plano, emViagem, cpf, carteira);
             }
             else if(tipo.equals(Administrador.TIPO)){
                 int codigoAcesso = Integer.parseInt(campos[COLUNA_CODIGO_ACESSO]);
@@ -74,11 +80,11 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             return usuario;
     
         } catch (NumberFormatException e) {
-            throw new IOException("Código, estado, estação ou bateria inválido", e);
+            throw new IOException("Código ou Código de Acesso inválidos", e);
         } catch (IllegalArgumentException e) {
-            throw new IOException("Dados do veículo inválidos", e);
+            throw new IOException("Dados do usuário inválidos", e);
         } catch (Exception e) {
-            throw new IOException("Não foi possível carregar o veículo do Banco de dados devido a um erro: ", e);
+            throw new IOException("Não foi possível carregar o usuário do Banco de dados devido a um erro: ", e);
         }
     }
 
@@ -94,6 +100,7 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
         campos[COLUNA_PLANO] = "";
         campos[COLUNA_EM_VIAGEM] = "";
         campos[COLUNA_CPF] = "";
+        campos[COLUNA_CARTEIRA] = "";
         campos[COLUNA_CODIGO_ACESSO] = "";
 
         if(entidade instanceof Cliente){
@@ -101,6 +108,7 @@ public class UsuarioCsvMapper implements CsvMapper<Usuario>{
             campos[COLUNA_PLANO] = String.valueOf(cliente.getPlano().getCodigo());
             campos[COLUNA_EM_VIAGEM] = String.valueOf(cliente.isEmViagem());
             campos[COLUNA_CPF] = CsvHelper.stringParaCsv(cliente.getCpf());
+            campos[COLUNA_CARTEIRA] = String.valueOf(cliente.getCarteira().getCodigo());
         }
         else if(entidade instanceof Administrador){
             Administrador administrador = (Administrador) entidade;

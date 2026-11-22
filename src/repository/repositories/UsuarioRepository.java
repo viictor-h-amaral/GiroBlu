@@ -59,6 +59,12 @@ public class UsuarioRepository extends Repository<Usuario>{
                 }
                 return COLUNA_VAZIA;
 
+            case "carteira":
+                if(usuario instanceof Cliente){
+                    return String.valueOf(((Cliente) usuario).getCarteira().getCodigo());
+                }
+                return COLUNA_VAZIA;
+
             case "codigoAcesso":
                 if(usuario instanceof Administrador){
                     return String.valueOf(((Administrador) usuario).getCodigoAcesso());
@@ -68,5 +74,30 @@ public class UsuarioRepository extends Repository<Usuario>{
             default:
                 throw new IllegalArgumentException("Campo informado é inválido! Informado: " + campo);
         }
+    }
+
+    @Override 
+    public void insert(Usuario entidade) throws IOException {
+        if(entidade instanceof Cliente){
+            var cliente = (Cliente) entidade;
+            var carteiraRepo = CarteiraRepository.getInstance();
+            var carteira = cliente.getCarteira();
+            carteiraRepo.insert(carteira);
+        }
+
+        super.insert(entidade);
+    }
+
+    @Override
+    public void delete(int codigo) throws IOException{
+        var usuario = selectOne(codigo);
+        super.delete(codigo);
+        
+        if (!(usuario instanceof Cliente)){
+            return;
+        }
+
+        int codigoCarteira = ((Cliente) usuario).getCarteira().getCodigo();
+        CarteiraRepository.getInstance().delete(codigoCarteira);        
     }
 }

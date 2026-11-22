@@ -26,10 +26,10 @@ public abstract class Repository<T extends Salvavel> {
         firstCharge();
     }
 
-    public T selectOne(int id) throws IOException{
+    public T selectOne(int codigo) throws IOException{
         List<T> entity = selectAll();
         for (T e : entity) {
-            if (e.getCodigo() == id) {
+            if (e.getCodigo() == codigo) {
                 return e;
             }
         }
@@ -64,7 +64,7 @@ public abstract class Repository<T extends Salvavel> {
         return getCache();
     }
 
-    private List<T> getCache(){
+    protected List<T> getCache(){
         return cache;
     }
 
@@ -136,11 +136,11 @@ public abstract class Repository<T extends Salvavel> {
         gravarArquivo();
     }
 
-    public void delete(int id) throws IOException {
+    public void delete(int codigo) throws IOException {
         List<T> entidades = getCache();
         boolean removido = false;
         for (int i = 0; i < entidades.size(); i++) {
-            if (entidades.get(i).getCodigo() == id) {
+            if (entidades.get(i).getCodigo() == codigo) {
                 entidades.remove(i);
                 removido = true;
                 break;
@@ -148,12 +148,12 @@ public abstract class Repository<T extends Salvavel> {
         }
 
         if (!removido) {
-            throw new IOException("Registro não encontrado: " + id);
+            throw new IOException("Registro não encontrado: " + codigo);
         }
         gravarArquivo();
     }
 
-    private void gravarArquivo() throws IOException {
+    protected void gravarArquivo() throws IOException {
         List<String> linhas = new ArrayList<String>();
         for (T entidade : getCache()) {
             linhas.add(mapeador.toCsv(entidade));
