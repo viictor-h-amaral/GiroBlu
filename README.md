@@ -136,4 +136,4 @@ Projeto desenvolvido exclusivamente para fins didáticos no curso de Ciência da
 | Badge | Descrição |
 | :--: | :--: |
 | ![YOLO](/docs/achievements/YOLO_Badge.png) | Merged a pull request in master/main without review |
-| ![](/docs/achievements/QuickDraw_Badge.png) | Closed an issue or PR within 5 minutes of opening it |
+| ![QUICK_DRAW](/docs/achievements/QuickDraw_Badge.png) | Closed an issue or PR within 5 minutes of opening it |
