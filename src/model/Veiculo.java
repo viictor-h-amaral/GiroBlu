@@ -101,12 +101,20 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     public void liberarParaViagem() throws ProblemaViagemException{
         validarLiberarParaViagem();
         setEstadoAtual(EstadoAtualVeiculo.EM_VIAGEM);
+        this.estacao = null;
     }
 
-    public void retornarViagem() throws VeiculoNaoEmViagemException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void validarRetornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
         if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
             throw new VeiculoNaoEmViagemException();
         }
+        else if(estacao.isLotada()){
+            throw new EstacaoLotadaException(estacao.getNome(), estacao.getLimiteVagas());
+        }
+    }
+
+    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+        validarRetornarViagem(estacao);
         setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
     }
 

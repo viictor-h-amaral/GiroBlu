@@ -93,11 +93,14 @@ public class Estacao extends Salvavel {
 
     public void setNumero(int numero){
         endereco.setNumero(numero);
+      
+    public boolean isLotada(){
+        return veiculos.size() >= getLimiteVagas();
     }
 
     public void adicionarVeiculo(Veiculo veiculo) throws EstacaoLotadaException{
-        if(veiculos.size() >= getLimiteVagas()){
-                throw new EstacaoLotadaException(getNome(), getLimiteVagas());
+        if(isLotada()){
+            throw new EstacaoLotadaException(getNome(), getLimiteVagas());
         }
         veiculos.add(veiculo);
     }
