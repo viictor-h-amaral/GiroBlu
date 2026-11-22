@@ -1,6 +1,8 @@
 package model;
 
+import auxiliares.EstadoAtualVeiculo;
 import exceptions.BateriaInsuficienteException;
+import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
 import exceptions.VeiculoEmUsoException;
 
@@ -9,34 +11,44 @@ public abstract class VeiculoEletrico extends Veiculo{
     private int bateria;
     private int consumoPorMinuto;
 
-    public VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto){
-        super(codigo, modelo, valorDesbloqueio, valorPorMinuto);
-        validarCriacaoVeiculoEletrico(bateria, consumoPorMinuto);
-        this.bateria = bateria;
-        this.consumoPorMinuto = consumoPorMinuto;
+    protected VeiculoEletrico(String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao) throws EstacaoLotadaException{
+        super(modelo, valorDesbloqueio, valorPorMinuto, estacao);
+        setBateria(bateria);
+        setConsumoPorMinuto(consumoPorMinuto);
     }
 
-    private void validarCriacaoVeiculoEletrico(int bateria, int consumoPorMinuto){
-        if(bateria < 0){
-            throw new IllegalArgumentException("A bateria não pode ser menor que 0.");
-        }
-        if(consumoPorMinuto <= 0){
-            throw new IllegalArgumentException("O consumo por minuto deve ser maior que 0.");
-        }
+    protected VeiculoEletrico(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, int bateria, int consumoPorMinuto, Estacao estacao, EstadoAtualVeiculo estadoAtual){
+        super(codigo, modelo, valorDesbloqueio, valorPorMinuto, estacao, estadoAtual);
+        setBateria(bateria);
+        setConsumoPorMinuto(consumoPorMinuto);
     }
 
     public int getBateria(){
         return this.bateria;
     }
 
-    public void recarregarBateria() throws VeiculoEmUsoException{ //TODO: parâmetros do método (Administrador administrador)
+    protected void setBateria(int bateria){
+        if(bateria < 0 || bateria > 100){
+            throw new IllegalArgumentException("A bateria deve estar entre 0 e 100.");
+        }
+        this.bateria = bateria;
+    }
+
+    public void recarregarBateria(Administrador administrador) throws VeiculoEmUsoException{
         enviarParaManutencao();
-        this.bateria = 100;
+        setBateria(100);
     }
 
 
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;
+    }
+
+    protected void setConsumoPorMinuto(int consumoPorMinuto){
+        if(consumoPorMinuto <= 0){
+            throw new IllegalArgumentException("O consumo por minuto deve ser maior que 0.");
+        }
+        this.consumoPorMinuto = consumoPorMinuto;
     }
 
     @Override 
@@ -51,9 +63,8 @@ public abstract class VeiculoEletrico extends Veiculo{
         if (minutos < 0) {
             throw new IllegalArgumentException("Tempo de uso inválido. Deve ser maior ou igual a zero.");
         }
-        this.bateria = getBateria() - (minutos * getConsumoPorMinuto());
-        if(getBateria() < 0){
-            this.bateria = 0;
-        }
+        int novaBateria = getBateria() - (minutos * getConsumoPorMinuto()) < 0 ?
+                            0 : getBateria() - (minutos * getConsumoPorMinuto());
+        setBateria(novaBateria);
     }
 }

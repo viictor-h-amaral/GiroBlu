@@ -5,38 +5,62 @@ import exceptions.ViagemEmAndamentoException;
 
 public class Cliente extends Usuario {
 
-    public Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf) {
-        super(codigo, nome, email);
-        validarCriacaoCliente(plano, cpf);
+    public static String TIPO = "CLIENTE";
 
-        this.plano = plano;
-        this.carteira = new Carteira(codigo, 0.0);
-        this.cpf = cpf;
+    public static Cliente criarCliente(String nome, String email, Plano plano, String cpf) {
+        return new Cliente(nome, email, plano, false, cpf);
+    }
+
+    public static Cliente carregarCliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf, Carteira carteira) {
+        return new Cliente(codigo, nome, email, plano, emViagem, cpf, carteira);
+    }
+
+    private Cliente(String nome, String email, Plano plano, boolean emViagem, String cpf) {
+        super(nome, email);
+        atualizarPlano(plano);
+        this.carteira = Carteira.criarCarteira();
+        setCpf(cpf);
         this.emViagem = emViagem;
     }
 
-    private void validarCriacaoCliente(Plano plano, String cpf) {
-        if (cpf == null || cpf.isBlank()) {
-            throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
-        }
-        else if (plano == null){
-            throw new IllegalArgumentException("Plano inválido. Não pode ser nulo.");
-        }
+    private Cliente(int codigo, String nome, String email, Plano plano, boolean emViagem, String cpf, Carteira carteira) {
+        super(codigo, nome, email);
+        atualizarPlano(plano);
+        setCarteira(carteira);
+        setCpf(cpf);
+        this.emViagem = emViagem;
     }
 
     private Carteira carteira;
+
     public Carteira getCarteira() {
         return carteira;
     }
 
+    private void setCarteira(Carteira carteira){
+        if(carteira == null || carteira.getCodigo() == null){
+            throw new IllegalArgumentException("Nova carteira inválida. Não pode ser nula.");
+        }
+        this.carteira = carteira;
+    }
+
     private Plano plano;
+
     public Plano getPlano() {
         return plano;
     }
 
     private String cpf;
+
     public String getCpf() {
         return cpf;
+    }
+
+    public void setCpf(String cpf){
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("CPF inválido. Não pode ser nulo ou vazio.");
+        }
+        this.cpf = cpf;
     }
 
     private boolean emViagem;
@@ -70,7 +94,7 @@ public class Cliente extends Usuario {
     }
 
     public void atualizarPlano(Plano novoPlano) {
-        if (novoPlano == null) {
+        if (novoPlano == null || novoPlano.getCodigo() == null) {
             throw new IllegalArgumentException("Novo plano inválido. Não pode ser nulo.");
         }
         else if (novoPlano.equals(plano)) {
