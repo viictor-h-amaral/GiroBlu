@@ -39,6 +39,7 @@ public abstract class VeiculoEletrico extends Veiculo{
         setBateria(100);
     }
 
+
     public int getConsumoPorMinuto(){
         return this.consumoPorMinuto;
     }
