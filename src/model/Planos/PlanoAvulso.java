@@ -26,10 +26,4 @@ public class PlanoAvulso extends PlanoGratuito {
     public double calcularTarifa(int minutos, Veiculo veiculo) {
         return veiculo.calcularValorTotal(minutos);
     }
-
-    @Override
-    public double calcularTarifa(int minutos, Veiculo veiculo) {
-        return veiculo.calcularValorTotal(minutos);
-    }
-
 }
