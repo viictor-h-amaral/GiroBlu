@@ -4,8 +4,12 @@ import model.Plano;
 
 public abstract class PlanoGratuito extends Plano {
 
-    public PlanoGratuito(int codigo, String nome) {
+    protected PlanoGratuito(int codigo, String nome) {
         super(codigo, nome);
+    }
+
+    protected PlanoGratuito(String nome) {
+        super(nome);
     }
 
     @Override

@@ -1,59 +1,79 @@
 package model;
 
-public class Endereco {
+import contracts.Salvavel;
 
-    private int codigo;
+public class Endereco extends Salvavel {
+
     private String estado;
     private String cidade;
     private String logradouro;
     private int numero;
 
-    public Endereco(int codigo, String estado, String cidade, String logradouro, int numero){
-        validarCriacaoEndereco(codigo, estado, cidade, logradouro, numero);
-        
-        this.codigo = codigo;
-        this.estado = estado;
-        this.cidade = cidade;
-        this.logradouro = logradouro;
-        this.numero = numero;
+    public static Endereco criarEndereco (String estado, String cidade, String logradouro, int numero){
+        return new Endereco(estado, cidade, logradouro, numero);
     }
 
-    private void validarCriacaoEndereco(int codigo, String estado, String cidade, String logradouro, int numero){
-        if(codigo <= 0){
-            throw new IllegalArgumentException("Código inválido. Deve ser maior que zero.");
-        }
-        else if(estado == null || estado.isBlank()){
-            throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(cidade == null || cidade.isBlank()){
-            throw new IllegalArgumentException("Cidade inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(logradouro == null || logradouro.isBlank()){
-            throw new IllegalArgumentException("Logradouro inválido. Não pode ser nulo ou vazio.");
-        }
-        else if(numero <= 0){
-            throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
-        }
+    public static Endereco carregarEndereco (int codigo, String estado, String cidade, String logradouro, int numero) {
+        return new Endereco(codigo, estado, cidade, logradouro, numero);
     }
 
-    public int getCodigo(){
-        return this.codigo;
+    private Endereco(String estado, String cidade, String logradouro, int numero){
+        super();
+        setEstado(estado);
+        setCidade(cidade);
+        setLogradouro(logradouro);
+        setNumero(numero);
+    }
+
+    private Endereco(int codigo, String estado, String cidade, String logradouro, int numero){
+        super(codigo);
+        setEstado(estado);
+        setCidade(cidade);
+        setLogradouro(logradouro);
+        setNumero(numero);
     }
 
     public String getEstado(){
         return this.estado;
     }
 
+    public void setEstado(String estado){
+        if(estado == null || estado.isBlank()){
+            throw new IllegalArgumentException("Estado inválido. Não pode ser nulo ou vazio.");
+        }
+        this.estado = estado;
+    }
+
     public String getCidade(){
         return this.cidade;
+    }
+
+    public void setCidade(String cidade){
+        if(cidade == null || cidade.isBlank()){
+            throw new IllegalArgumentException("Cidade inválido. Não pode ser nulo ou vazio.");
+        }
+        this.cidade = cidade;
     }
 
     public String getLogradouro(){
         return this.logradouro;
     }
 
+    public void setLogradouro(String logradouro){
+        if(logradouro == null || logradouro.isBlank()){
+            throw new IllegalArgumentException("Logradouro inválido. Não pode ser nulo ou vazio.");
+        }
+        this.logradouro = logradouro;
+    }
+
     public int getNumero(){
         return this.numero;
     }
 
+    public void setNumero(int numero){
+        if(numero <= 0){
+            throw new IllegalArgumentException("Número inválido. Deve ser maior que zero.");
+        }
+        this.numero = numero;
+    }
 }
