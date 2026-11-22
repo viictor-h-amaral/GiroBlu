@@ -130,3 +130,9 @@ No VS Code ou IntelliJ, navegue até as classes de teste no pacote de testes e e
 
 ## 📄 Licença e Uso Acadêmico
 Projeto desenvolvido exclusivamente para fins didáticos no curso de Ciência da Computação da FURB (2026/2).
+
+## 🏆 GITHUB Achievements
+
+| Badge | Descrição |
+| :--: | :--: |
+| ![YOLO](/docs/achievements/YOLO_Badge.png) | Merged a pull request without a review
