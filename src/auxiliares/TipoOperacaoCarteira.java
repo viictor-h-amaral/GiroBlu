@@ -6,20 +6,26 @@ public enum TipoOperacaoCarteira {
     DEBITO(2);
 
 
-    private int tipoOperacaoCarteira;
+    private final int numero;
 
-    TipoOperacaoCarteira(int tipoOperacaoCarteira){
-        if(tipoOperacaoCarteira <= 0){
-            throw new IllegalArgumentException("Tipo de operação deve ser maior que 0.");
+    TipoOperacaoCarteira(int numero){
+        if(numero <= 0 || numero > 2){
+            throw new IllegalArgumentException("Tipo de operação deve ser 1 (crédito) ou 2 (débito).");
         }
-        this.tipoOperacaoCarteira = tipoOperacaoCarteira;
+        this.numero = numero;
     }
 
-    public int getTipoOperacaoCarteira(){
-        return this.tipoOperacaoCarteira;
+    public int getNumero() {
+        return this.numero;
     }
 
-    public void setTipoOperacaoCarteira(int tipoOperacaoCarteira){
-        this.tipoOperacaoCarteira = tipoOperacaoCarteira;
+    public static TipoOperacaoCarteira intParaEnum(int numero) {
+        TipoOperacaoCarteira[] opcoesEnum = values();
+        for (TipoOperacaoCarteira tipoOperacao : opcoesEnum) {
+            if (numero == tipoOperacao.getNumero()) {
+                return tipoOperacao;
+            }
+        }
+        throw new IllegalArgumentException("Tipo de operação inexistente: " + numero);
     }
 }
