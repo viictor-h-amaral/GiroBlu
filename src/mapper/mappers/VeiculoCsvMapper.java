@@ -7,6 +7,7 @@ import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.BicicletaEletrica;
 import model.BicicletaMecanica;
+import model.Estacao;
 import model.PatineteEletrico;
 import model.Veiculo;
 import model.VeiculoEletrico;
@@ -49,11 +50,31 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         try {
             int codigo = Integer.parseInt(campos[COLUNA_CODIGO]);
             int codigoEstado = Integer.parseInt(campos[COLUNA_ESTADO_ATUAL]);
-            int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
-            EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.values()[codigoEstado];
+            
+            EstadoAtualVeiculo estadoAtual = null;
+            for (EstadoAtualVeiculo estado : EstadoAtualVeiculo.values()) {
+                if (estado.getEstadoAtual() == codigoEstado) {
+                    estadoAtual = estado;
+                    break;
+                }
+            }
+            if (estadoAtual == null) {
+                throw new IllegalArgumentException("Estado de veículo inválido: " + codigoEstado);
+            }
 
-            var estacaoRepository = EstacaoRepository.getInstance();
-            var estacao = estacaoRepository.selectOne(codigoEstacao);
+            Estacao estacao = null;
+            if (campos[COLUNA_ESTACAO].isBlank()) {
+                if (estadoAtual != EstadoAtualVeiculo.EM_VIAGEM) {
+                    throw new IOException("Somente veículos em viagem podem estar sem estação.");
+                }
+            } else {
+                int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
+                var estacaoRepository = EstacaoRepository.getInstance();
+                estacao = estacaoRepository.selectOne(codigoEstacao);
+                if (estacao == null) {
+                    throw new IOException("Estação não encontrada: " + codigoEstacao);
+                }
+            }
 
             Veiculo veiculo;
             if (campos[COLUNA_MODELO].equals(BicicletaMecanica.MODELO)) {
@@ -96,7 +117,11 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getEstadoAtual());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());
         campos[COLUNA_VALOR_POR_MINUTO] = String.valueOf(entidade.getValorPorMinuto());
-        campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());
+        if (entidade.getEstacao() == null) {
+            campos[COLUNA_ESTACAO] = "";
+        } else {
+            campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());
+        }
 
         if (entidade instanceof VeiculoEletrico) {
             VeiculoEletrico eletrico = (VeiculoEletrico) entidade;
