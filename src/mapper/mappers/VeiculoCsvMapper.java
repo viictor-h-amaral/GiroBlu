@@ -50,7 +50,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
             int codigo = Integer.parseInt(campos[COLUNA_CODIGO]);
             int codigoEstado = Integer.parseInt(campos[COLUNA_ESTADO_ATUAL]);
             int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
-            EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.values()[codigoEstado];
+            EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.intParaEnum(codigoEstado);
 
             var estacaoRepository = EstacaoRepository.getInstance();
             var estacao = estacaoRepository.selectOne(codigoEstacao);
@@ -93,7 +93,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         String[] campos = new String[QUANTIDADE_COLUNAS];
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
         campos[COLUNA_MODELO] = CsvHelper.stringParaCsv(entidade.getModelo());
-        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getEstadoAtual());
+        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getNumero());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());
         campos[COLUNA_VALOR_POR_MINUTO] = String.valueOf(entidade.getValorPorMinuto());
         campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());

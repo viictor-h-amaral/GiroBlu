@@ -7,20 +7,26 @@ public enum EstadoAtualVeiculo {
     EM_VIAGEM(3);
 
 
-    private int estadoAtual;
+    private final int numero;
 
-    EstadoAtualVeiculo(int estadoAtual){
-        if(estadoAtual <= 0){
-            throw new IllegalArgumentException("O estado atual deve ser maior que 0.");
+    EstadoAtualVeiculo(int numero){
+        if(numero <= 0 || numero > 3){
+            throw new IllegalArgumentException("O estado atual deve ser 1 (disponível), 2 (manutenção) ou 3 (em viagem).");
         }
-        this.estadoAtual = estadoAtual;
+        this.numero = numero;
     }
 
-    public int getEstadoAtual(){
-        return this.estadoAtual;
+    public int getNumero() {
+        return this.numero;
     }
 
-    public void setEstadoAtual(int estadoAtual){
-        this.estadoAtual = estadoAtual;
+    public static EstadoAtualVeiculo intParaEnum(int numero) {
+        EstadoAtualVeiculo[] opcoesEnum = values();
+        for (EstadoAtualVeiculo estado : opcoesEnum) {
+            if (numero == estado.getNumero()) {
+                return estado;
+            }
+        }
+        throw new IllegalArgumentException("Tipo de operação inexistente: " + numero);
     }
 }
