@@ -19,7 +19,7 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
     private static final int COLUNA_DATA_HORA_INICIO = 3;
     private static final int COLUNA_DATA_HORA_FINAL = 4;
     private static final int QUANTIDADE_COLUNAS = 5;
-    private static final String CABECALHO = "codigo;dataHoraInicio;dataHoraFinal;viajante;veiculo";
+    private static final String CABECALHO = "codigo;viajante;veiculo;dataHoraInicio;dataHoraFinal";
 
     @Override
     public String getCabecalho() {
@@ -52,9 +52,12 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
             var veiculo = veiculoRepository.selectOne(codigoVeiculo);
 
             var dataHoraInicio = LocalDateTime.parse(campos[COLUNA_DATA_HORA_INICIO]);
-                var dataHoraFinal = campos[COLUNA_DATA_HORA_FINAL].isBlank()
-                    ? null
-                    : LocalDateTime.parse(campos[COLUNA_DATA_HORA_FINAL]);
+            LocalDateTime dataHoraFinal;
+            if (campos[COLUNA_DATA_HORA_FINAL].isBlank()) {
+                dataHoraFinal = null;
+            } else {
+                dataHoraFinal = LocalDateTime.parse(campos[COLUNA_DATA_HORA_FINAL]);
+            }
 
             return Viagem.carregarViagem(codigo, viajante, veiculo, dataHoraInicio, dataHoraFinal);
         } catch (NumberFormatException e) {
@@ -77,9 +80,11 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
         campos[COLUNA_VIAJANTE] = String.valueOf(entidade.getViajante().getCodigo());
         campos[COLUNA_VEICULO] = String.valueOf(entidade.getVeiculo().getCodigo());
         campos[COLUNA_DATA_HORA_INICIO] = String.valueOf(entidade.getDataHoraInicio());
-        campos[COLUNA_DATA_HORA_FINAL] = entidade.getDataHoraFinal() == null
-            ? ""
-            : entidade.getDataHoraFinal().toString();
+        if (entidade.getDataHoraFinal() == null) {
+            campos[COLUNA_DATA_HORA_FINAL] = "";
+        } else {
+            campos[COLUNA_DATA_HORA_FINAL] = entidade.getDataHoraFinal().toString();
+        }
 
         String linha = campos[COLUNA_CODIGO];
         for (int i = 1; i < campos.length; i++) {
@@ -88,7 +93,7 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
         return linha;
     }
 
-    private void validarViagem(Viagem viagem){
+    private void validarViagem(Viagem viagem) {
         if (viagem == null) {
             throw new IllegalArgumentException("A viagem não pode ser nula");
         }

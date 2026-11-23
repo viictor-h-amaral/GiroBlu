@@ -50,24 +50,10 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         try {
             int codigo = Integer.parseInt(campos[COLUNA_CODIGO]);
             int codigoEstado = Integer.parseInt(campos[COLUNA_ESTADO_ATUAL]);
-            
-            EstadoAtualVeiculo estadoAtual = null;
-            for (EstadoAtualVeiculo estado : EstadoAtualVeiculo.values()) {
-                if (estado.getEstadoAtual() == codigoEstado) {
-                    estadoAtual = estado;
-                    break;
-                }
-            }
-            if (estadoAtual == null) {
-                throw new IllegalArgumentException("Estado de veículo inválido: " + codigoEstado);
-            }
+            EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.intParaEnum(codigoEstado);
 
             Estacao estacao = null;
-            if (campos[COLUNA_ESTACAO].isBlank()) {
-                if (estadoAtual != EstadoAtualVeiculo.EM_VIAGEM) {
-                    throw new IOException("Somente veículos em viagem podem estar sem estação.");
-                }
-            } else {
+            if (!campos[COLUNA_ESTACAO].isBlank()) {
                 int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
                 var estacaoRepository = EstacaoRepository.getInstance();
                 estacao = estacaoRepository.selectOne(codigoEstacao);
@@ -79,16 +65,13 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
             Veiculo veiculo;
             if (campos[COLUNA_MODELO].equals(BicicletaMecanica.MODELO)) {
                 veiculo = BicicletaMecanica.carregarBicicletaMecanica(codigo, estacao, estadoAtual);
-            } 
-            else if (campos[COLUNA_MODELO].equals(BicicletaEletrica.MODELO)) {
+            } else if (campos[COLUNA_MODELO].equals(BicicletaEletrica.MODELO)) {
                 int bateriaBicicleta = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = BicicletaEletrica.carregarBicicletaEletrica(codigo, bateriaBicicleta, estacao, estadoAtual);
-            }
-            else if (campos[COLUNA_MODELO].equals(PatineteEletrico.MODELO)) {
+            } else if (campos[COLUNA_MODELO].equals(PatineteEletrico.MODELO)) {
                 int bateriaPatinete = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = PatineteEletrico.carregarPatineteEletrico(codigo, bateriaPatinete, estacao, estadoAtual);
-            }
-            else {
+            } else {
                 throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_MODELO]);
             }
 
@@ -114,7 +97,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         String[] campos = new String[QUANTIDADE_COLUNAS];
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
         campos[COLUNA_MODELO] = CsvHelper.stringParaCsv(entidade.getModelo());
-        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getEstadoAtual());
+        campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getNumero());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());
         campos[COLUNA_VALOR_POR_MINUTO] = String.valueOf(entidade.getValorPorMinuto());
         if (entidade.getEstacao() == null) {
@@ -127,8 +110,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
             VeiculoEletrico eletrico = (VeiculoEletrico) entidade;
             campos[COLUNA_BATERIA] = String.valueOf(eletrico.getBateria());
             campos[COLUNA_CONSUMO_POR_MINUTO] = String.valueOf(eletrico.getConsumoPorMinuto());
-        } 
-        else {
+        } else {
             campos[COLUNA_BATERIA] = "";
             campos[COLUNA_CONSUMO_POR_MINUTO] = "";
         }
@@ -143,8 +125,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
     private void validarVeiculo(Veiculo veiculo) {
         if (veiculo == null) {
             throw new IllegalArgumentException("O veículo não pode ser nulo");
-        }
-        else if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
+        } else if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
             throw new IllegalArgumentException(
                     "O campo de texto não pode conter ponto e vírgula (;), aspas (\") ou quebras de linha");
         }

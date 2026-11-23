@@ -23,7 +23,8 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         setModelo(modelo);
         setEstadoAtual(estadoAtual);
         setValorDesbloqueio(valorDesbloqueio);
-        setValorPorMinuto(valorPorMinuto);        
+        setValorPorMinuto(valorPorMinuto);   
+        setEstacao(estacao);     
     }
     
     protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException {

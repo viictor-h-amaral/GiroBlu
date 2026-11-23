@@ -37,7 +37,7 @@ public class VeiculoRepository extends Repository<Veiculo> {
             case "valorPorMinuto":
                 return String.valueOf(veiculo.getValorPorMinuto());
             case "estadoAtual":
-                return String.valueOf(veiculo.getEstadoAtual().getEstadoAtual());
+                return String.valueOf(veiculo.getEstadoAtual().getNumero());
             case "estacao":
                 if (veiculo.getEstacao() == null) {
                     return COLUNA_VAZIA;
