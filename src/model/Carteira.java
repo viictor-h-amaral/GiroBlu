@@ -1,7 +1,11 @@
 package model;
 
+import java.io.IOException;
+
+import auxiliares.TipoOperacaoCarteira;
 import contracts.Salvavel;
 import exceptions.ValorRecargaInvalidoException;
+import repository.repositories.OperacaoCarteiraRepository;
 
 public class Carteira extends Salvavel{
 
@@ -32,19 +36,21 @@ public class Carteira extends Salvavel{
         this.saldo = saldo;
     }
 
-    public void realizarRecarga(double valor) throws ValorRecargaInvalidoException {
+    public void realizarRecarga(double valor) throws ValorRecargaInvalidoException, IOException {
         if (valor <= 0) {
             throw new ValorRecargaInvalidoException();
         }
         saldo += valor;
-        System.out.println("Recarga de " + valor + " realizada com sucesso! Data: " + java.time.LocalDateTime.now());
+        var recarga = OperacaoCarteira.criarOperacaoCarteira(this, TipoOperacaoCarteira.CREDITO, valor);
+        OperacaoCarteiraRepository.getInstance().insert(recarga);
     }
 
-    public void realizarPagamento(double valor) {
+    public void realizarPagamento(double valor) throws IOException {
         if (valor <= 0) {
             throw new IllegalArgumentException("O valor do pagamento deve ser positivo.");
         }
         saldo -= valor;
-        System.out.println("Pagamento de " + valor + " realizado com sucesso! Data: " + java.time.LocalDateTime.now());
+        var pagamento = OperacaoCarteira.criarOperacaoCarteira(this, TipoOperacaoCarteira.DEBITO, valor);
+        OperacaoCarteiraRepository.getInstance().insert(pagamento);
     }
 }
