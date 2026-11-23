@@ -7,12 +7,13 @@ import contracts.Salvavel;
 
 public class OperacaoCarteira extends Salvavel {
 
-    public static OperacaoCarteira criarCarteira(Carteira carteira, TipoOperacaoCarteira tipoOperacao, double valorOperacao,
-            LocalDateTime dataOperacao) {
-        return new OperacaoCarteira(carteira, tipoOperacao, valorOperacao, dataOperacao);
+    public static OperacaoCarteira criarOperacaoCarteira(Carteira carteira, TipoOperacaoCarteira tipoOperacao,
+            double valorOperacao) {
+        var agora = LocalDateTime.now();
+        return new OperacaoCarteira(carteira, tipoOperacao, valorOperacao, agora);
     }
     
-    public static OperacaoCarteira carregarCarteira(int codigo, Carteira carteira, TipoOperacaoCarteira tipoOperacao, double valorOperacao,
+    public static OperacaoCarteira carregarOperacaoCarteira(int codigo, Carteira carteira, TipoOperacaoCarteira tipoOperacao, double valorOperacao,
             LocalDateTime dataOperacao) {
         return new OperacaoCarteira(codigo, carteira, tipoOperacao, valorOperacao, dataOperacao);
     }
