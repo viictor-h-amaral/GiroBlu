@@ -15,6 +15,7 @@ public class Viagem extends Salvavel{
     private LocalDateTime dataHoraFinal = null;
     private Cliente viajante;
     private Veiculo veiculo;
+    private Estacao estacaoOrigem;
 
     public static Viagem criarViagem(Cliente viajante, Veiculo veiculo) throws ProblemaViagemException{
         return new Viagem(viajante, veiculo);
@@ -26,15 +27,17 @@ public class Viagem extends Salvavel{
 
     private Viagem(Cliente viajante, Veiculo veiculo) throws ProblemaViagemException{
         super();
+        setViajante(viajante);
+        setVeiculo(veiculo);
+
         viajante.validarLiberarParaViagem();
         veiculo.validarLiberarParaViagem();
 
+        setEstacaoOrigem(veiculo.getEstacao());
+        getEstacaoOrigem().retirarVeiculo(veiculo);
+
         viajante.liberarParaViagem();
         veiculo.liberarParaViagem();
-        
-        setViajante(viajante);
-        setVeiculo(veiculo);
-        getVeiculo().getEstacao().retirarVeiculo(getVeiculo());
 
         setDataHoraInicio(LocalDateTime.now());
     }
@@ -45,6 +48,7 @@ public class Viagem extends Salvavel{
         setVeiculo(veiculo);
         setDataHoraInicio(dataHoraInicio);
         this.dataHoraFinal = dataHoraFinal;
+        this.estacaoOrigem = null;
     }
 
     public Cliente getViajante() {
@@ -60,6 +64,17 @@ public class Viagem extends Salvavel{
     
     public Veiculo getVeiculo() {
         return this.veiculo;
+    }
+
+    public Estacao getEstacaoOrigem() {
+        return this.estacaoOrigem;
+    }
+
+    private void setEstacaoOrigem(Estacao estacao){
+        if (estacao == null) {
+            throw new IllegalArgumentException("O veículo precisa estar associado a uma estação para iniciar a viagem.");
+        }
+        this.estacaoOrigem = estacao;
     }
     
     public void setVeiculo(Veiculo veiculo){
