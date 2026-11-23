@@ -5,7 +5,6 @@ public enum TipoOperacaoCarteira {
     CREDITO(1),
     DEBITO(2);
 
-
     private final int numero;
 
     TipoOperacaoCarteira(int numero){
