@@ -114,6 +114,9 @@ public class Viagem extends Salvavel{
         getViajante().finalizarViagem();
 
         setDataHoraFinal(LocalDateTime.now());
+        if (getVeiculo() instanceof VeiculoEletrico veiculoEletrico) {
+            veiculoEletrico.calcularBateria(calcularMinutosViagem());
+        }
     }
 
     private void retornarViagemVeiculo(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
