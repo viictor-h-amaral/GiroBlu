@@ -21,8 +21,8 @@ public class Viagem extends Salvavel{
         return new Viagem(viajante, veiculo);
     }
 
-    public static Viagem carregarViagem(int codigo, Cliente viajante, Veiculo veiculo, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal){
-        return new Viagem(codigo, viajante, veiculo, dataHoraInicio, dataHoraFinal);
+    public static Viagem carregarViagem(int codigo, Cliente viajante, Veiculo veiculo, Estacao estacaoOrigem, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal) throws PeriodoInvalidoException   {
+        return new Viagem(codigo, viajante, veiculo, estacaoOrigem, dataHoraInicio, dataHoraFinal);
     }
 
     private Viagem(Cliente viajante, Veiculo veiculo) throws ProblemaViagemException{
@@ -42,13 +42,13 @@ public class Viagem extends Salvavel{
         setDataHoraInicio(LocalDateTime.now());
     }
 
-    private Viagem(int codigo, Cliente viajante, Veiculo veiculo, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal){
+    private Viagem(int codigo, Cliente viajante, Veiculo veiculo, Estacao estacaoOrigem, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFinal) throws PeriodoInvalidoException{
         super(codigo);
         setViajante(viajante);
         setVeiculo(veiculo);
+        setEstacaoOrigem(estacaoOrigem);
         setDataHoraInicio(dataHoraInicio);
-        this.dataHoraFinal = dataHoraFinal;
-        this.estacaoOrigem = null;
+        setDataHoraFinal(dataHoraFinal);
     }
 
     public Cliente getViajante() {
@@ -71,7 +71,7 @@ public class Viagem extends Salvavel{
     }
 
     private void setEstacaoOrigem(Estacao estacao){
-        if (estacao == null) {
+        if (estacao == null || estacao.getCodigo() == null) {
             throw new IllegalArgumentException("O veículo precisa estar associado a uma estação para iniciar a viagem.");
         }
         this.estacaoOrigem = estacao;
@@ -100,7 +100,7 @@ public class Viagem extends Salvavel{
     }
 
     private void setDataHoraFinal(LocalDateTime dataHoraFinal) throws PeriodoInvalidoException{
-        if(dataHoraFinal.isBefore(this.dataHoraInicio)){
+        if(dataHoraFinal != null && dataHoraFinal.isBefore(this.dataHoraInicio)){
             throw new PeriodoInvalidoException();
         }
         this.dataHoraFinal = dataHoraFinal;

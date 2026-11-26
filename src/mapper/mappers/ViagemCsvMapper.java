@@ -6,7 +6,9 @@ import java.time.format.DateTimeParseException;
 
 import mapper.CsvMapper;
 import model.Cliente;
+import model.Estacao;
 import model.Viagem;
+import repository.repositories.EstacaoRepository;
 import repository.repositories.UsuarioRepository;
 import repository.repositories.VeiculoRepository;
 
@@ -16,10 +18,11 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
     private static final int COLUNA_CODIGO = 0;
     private static final int COLUNA_VIAJANTE = 1;
     private static final int COLUNA_VEICULO = 2;
-    private static final int COLUNA_DATA_HORA_INICIO = 3;
-    private static final int COLUNA_DATA_HORA_FINAL = 4;
-    private static final int QUANTIDADE_COLUNAS = 5;
-    private static final String CABECALHO = "codigo;viajante;veiculo;dataHoraInicio;dataHoraFinal";
+    private static final int COLUNA_ESTACAO_ORIGEM = 3;
+    private static final int COLUNA_DATA_HORA_INICIO = 4;
+    private static final int COLUNA_DATA_HORA_FINAL = 5;
+    private static final int QUANTIDADE_COLUNAS = 6;
+    private static final String CABECALHO = "codigo;viajante;veiculo;estacaoOrigem;dataHoraInicio;dataHoraFinal";
 
     @Override
     public String getCabecalho() {
@@ -51,6 +54,13 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
             int codigoVeiculo = Integer.parseInt(campos[COLUNA_VEICULO]);
             var veiculo = veiculoRepository.selectOne(codigoVeiculo);
 
+            var estacaoRepository = EstacaoRepository.getInstance();
+            int codigoEstacaoOrigem = Integer.parseInt(campos[COLUNA_ESTACAO_ORIGEM]);
+            Estacao estacaoOrigem = estacaoRepository.selectOne(codigoEstacaoOrigem);
+            if (estacaoOrigem == null) {
+                throw new IOException("Estação de origem não encontrada: " + codigoEstacaoOrigem);
+            }
+
             var dataHoraInicio = LocalDateTime.parse(campos[COLUNA_DATA_HORA_INICIO]);
             LocalDateTime dataHoraFinal;
             if (campos[COLUNA_DATA_HORA_FINAL].isBlank()) {
@@ -59,7 +69,7 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
                 dataHoraFinal = LocalDateTime.parse(campos[COLUNA_DATA_HORA_FINAL]);
             }
 
-            return Viagem.carregarViagem(codigo, viajante, veiculo, dataHoraInicio, dataHoraFinal);
+            return Viagem.carregarViagem(codigo, viajante, veiculo, estacaoOrigem, dataHoraInicio, dataHoraFinal);
         } catch (NumberFormatException e) {
             throw new IOException("Código ou Código de Acesso inválidos", e);
         } catch (IllegalArgumentException e) {
@@ -79,6 +89,10 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
         campos[COLUNA_VIAJANTE] = String.valueOf(entidade.getViajante().getCodigo());
         campos[COLUNA_VEICULO] = String.valueOf(entidade.getVeiculo().getCodigo());
+        if (entidade.getEstacaoOrigem() == null) {
+            throw new IllegalArgumentException("A estação de origem da viagem não pode ser nula");
+        }
+        campos[COLUNA_ESTACAO_ORIGEM] = String.valueOf(entidade.getEstacaoOrigem().getCodigo());
         campos[COLUNA_DATA_HORA_INICIO] = String.valueOf(entidade.getDataHoraInicio());
         if (entidade.getDataHoraFinal() == null) {
             campos[COLUNA_DATA_HORA_FINAL] = "";

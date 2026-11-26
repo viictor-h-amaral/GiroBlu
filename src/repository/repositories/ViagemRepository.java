@@ -34,6 +34,8 @@ public class ViagemRepository extends Repository<Viagem>{
                 return String.valueOf(viagem.getViajante().getCodigo());
             case "veiculo":
                 return String.valueOf(viagem.getVeiculo().getCodigo());
+            case "estacaoOrigem":
+                return String.valueOf(viagem.getEstacaoOrigem().getCodigo());
             case "dataHoraInicio":
                 return String.valueOf(viagem.getDataHoraInicio());
             case "dataHoraFinal":
