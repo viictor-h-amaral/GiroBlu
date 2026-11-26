@@ -7,6 +7,7 @@ import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.BicicletaEletrica;
 import model.BicicletaMecanica;
+import model.Estacao;
 import model.PatineteEletrico;
 import model.Veiculo;
 import model.VeiculoEletrico;
@@ -49,25 +50,28 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         try {
             int codigo = Integer.parseInt(campos[COLUNA_CODIGO]);
             int codigoEstado = Integer.parseInt(campos[COLUNA_ESTADO_ATUAL]);
-            int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
             EstadoAtualVeiculo estadoAtual = EstadoAtualVeiculo.intParaEnum(codigoEstado);
 
-            var estacaoRepository = EstacaoRepository.getInstance();
-            var estacao = estacaoRepository.selectOne(codigoEstacao);
+            Estacao estacao = null;
+            if (!campos[COLUNA_ESTACAO].isBlank()) {
+                int codigoEstacao = Integer.parseInt(campos[COLUNA_ESTACAO]);
+                var estacaoRepository = EstacaoRepository.getInstance();
+                estacao = estacaoRepository.selectOne(codigoEstacao);
+                if (estacao == null) {
+                    throw new IOException("Estação não encontrada: " + codigoEstacao);
+                }
+            }
 
             Veiculo veiculo;
             if (campos[COLUNA_MODELO].equals(BicicletaMecanica.MODELO)) {
                 veiculo = BicicletaMecanica.carregarBicicletaMecanica(codigo, estacao, estadoAtual);
-            } 
-            else if (campos[COLUNA_MODELO].equals(BicicletaEletrica.MODELO)) {
+            } else if (campos[COLUNA_MODELO].equals(BicicletaEletrica.MODELO)) {
                 int bateriaBicicleta = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = BicicletaEletrica.carregarBicicletaEletrica(codigo, bateriaBicicleta, estacao, estadoAtual);
-            }
-            else if (campos[COLUNA_MODELO].equals(PatineteEletrico.MODELO)) {
+            } else if (campos[COLUNA_MODELO].equals(PatineteEletrico.MODELO)) {
                 int bateriaPatinete = Integer.parseInt(campos[COLUNA_BATERIA]);
                 veiculo = PatineteEletrico.carregarPatineteEletrico(codigo, bateriaPatinete, estacao, estadoAtual);
-            }
-            else {
+            } else {
                 throw new IOException("Tipo de veículo inválido: " + campos[COLUNA_MODELO]);
             }
 
@@ -96,14 +100,17 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
         campos[COLUNA_ESTADO_ATUAL] = String.valueOf(entidade.getEstadoAtual().getNumero());
         campos[COLUNA_VALOR_DESBLOQUEIO] = String.valueOf(entidade.getValorDesbloqueio());
         campos[COLUNA_VALOR_POR_MINUTO] = String.valueOf(entidade.getValorPorMinuto());
-        campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());
+        if (entidade.getEstacao() == null) {
+            campos[COLUNA_ESTACAO] = "";
+        } else {
+            campos[COLUNA_ESTACAO] = String.valueOf(entidade.getEstacao().getCodigo());
+        }
 
         if (entidade instanceof VeiculoEletrico) {
             VeiculoEletrico eletrico = (VeiculoEletrico) entidade;
             campos[COLUNA_BATERIA] = String.valueOf(eletrico.getBateria());
             campos[COLUNA_CONSUMO_POR_MINUTO] = String.valueOf(eletrico.getConsumoPorMinuto());
-        } 
-        else {
+        } else {
             campos[COLUNA_BATERIA] = "";
             campos[COLUNA_CONSUMO_POR_MINUTO] = "";
         }
@@ -118,8 +125,7 @@ public class VeiculoCsvMapper implements CsvMapper<Veiculo> {
     private void validarVeiculo(Veiculo veiculo) {
         if (veiculo == null) {
             throw new IllegalArgumentException("O veículo não pode ser nulo");
-        }
-        else if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
+        } else if (CsvHelper.temCaractereNaoSuportado(veiculo.getModelo())) {
             throw new IllegalArgumentException(
                     "O campo de texto não pode conter ponto e vírgula (;), aspas (\") ou quebras de linha");
         }

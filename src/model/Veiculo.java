@@ -23,8 +23,8 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         setModelo(modelo);
         setEstadoAtual(estadoAtual);
         setValorDesbloqueio(valorDesbloqueio);
-        setValorPorMinuto(valorPorMinuto);        
-        setEstacao(estacao);
+        setValorPorMinuto(valorPorMinuto);   
+        setEstacao(estacao);     
     }
     
     protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException {
@@ -86,8 +86,8 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     }
 
     private void setEstacao(Estacao estacao){
-        if(estacao == null){
-            throw new IllegalArgumentException("Estacao inválida. A estacao não pode ser nula.");
+        if (estacao == null && estadoAtual != EstadoAtualVeiculo.EM_VIAGEM) {
+            throw new IllegalArgumentException("Um veículo fora de viagem deve estar associado a uma estação.");
         }
         this.estacao = estacao;
     }

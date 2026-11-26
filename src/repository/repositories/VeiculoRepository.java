@@ -39,7 +39,11 @@ public class VeiculoRepository extends Repository<Veiculo> {
             case "estadoAtual":
                 return String.valueOf(veiculo.getEstadoAtual().getNumero());
             case "estacao":
-                return String.valueOf(veiculo.getEstacao().getCodigo());
+                if (veiculo.getEstacao() == null) {
+                    return COLUNA_VAZIA;
+                } else {
+                    return String.valueOf(veiculo.getEstacao().getCodigo());
+                }
             case "bateria":
                 if (veiculo instanceof VeiculoEletrico) {
                     return String.valueOf(((VeiculoEletrico) veiculo).getBateria());
