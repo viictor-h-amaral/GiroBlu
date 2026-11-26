@@ -113,7 +113,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         }
     }
 
-    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ //TO DO: parâmetros do método Estacao estacao. Realizar exception EstacaoLotadaException
+    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ 
         validarRetornarViagem(estacao);
         setEstacao(estacao);
         setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
