@@ -89,9 +89,6 @@ public class ViagemCsvMapper implements CsvMapper<Viagem> {
         campos[COLUNA_CODIGO] = String.valueOf(entidade.getCodigo());
         campos[COLUNA_VIAJANTE] = String.valueOf(entidade.getViajante().getCodigo());
         campos[COLUNA_VEICULO] = String.valueOf(entidade.getVeiculo().getCodigo());
-        if (entidade.getEstacaoOrigem() == null) {
-            throw new IllegalArgumentException("A estação de origem da viagem não pode ser nula");
-        }
         campos[COLUNA_ESTACAO_ORIGEM] = String.valueOf(entidade.getEstacaoOrigem().getCodigo());
         campos[COLUNA_DATA_HORA_INICIO] = String.valueOf(entidade.getDataHoraInicio());
         if (entidade.getDataHoraFinal() == null) {
