@@ -5,7 +5,6 @@ import java.io.IOException;
 import helper.CsvHelper;
 import mapper.CsvMapper;
 import model.Plano;
-import model.Veiculo;
 import model.Planos.PlanoAvulso;
 import model.Planos.PlanoMensal;
 import model.Planos.PlanoPago;
