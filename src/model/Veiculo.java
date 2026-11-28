@@ -6,7 +6,12 @@ import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoIndisponivelException;
 import exceptions.VeiculoNaoEmManutencaoException;
 import exceptions.VeiculoNaoEmViagemException;
+import repository.repositories.OperacaoManutensivelRepository;
+
+import java.io.IOException;
+
 import auxiliares.EstadoAtualVeiculo;
+import auxiliares.TipoOperacaoManutensivel;
 import contracts.Manutensivel;
 import contracts.Salvavel;
 
@@ -18,16 +23,18 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     private double valorPorMinuto;
     private Estacao estacao;
 
-    protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao, EstadoAtualVeiculo estadoAtual) {
+    protected Veiculo(int codigo, String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao,
+            EstadoAtualVeiculo estadoAtual) {
         super(codigo);
         setModelo(modelo);
         setEstadoAtual(estadoAtual);
         setValorDesbloqueio(valorDesbloqueio);
-        setValorPorMinuto(valorPorMinuto);   
-        setEstacao(estacao);     
+        setValorPorMinuto(valorPorMinuto);
+        setEstacao(estacao);
     }
-    
-    protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao) throws EstacaoLotadaException {
+
+    protected Veiculo(String modelo, double valorDesbloqueio, double valorPorMinuto, Estacao estacao)
+            throws EstacaoLotadaException {
         super();
         setModelo(modelo);
         setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
@@ -41,8 +48,8 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         return this.modelo;
     }
 
-    public void setModelo(String modelo){
-        if(modelo == null || modelo.isBlank()){
+    public void setModelo(String modelo) {
+        if (modelo == null || modelo.isBlank()) {
             throw new IllegalArgumentException("Modelo inválido. Não pode ser nulo ou vazio.");
         }
         this.modelo = modelo;
@@ -52,7 +59,7 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         return this.estadoAtual;
     }
 
-    private void setEstadoAtual(EstadoAtualVeiculo estado){
+    private void setEstadoAtual(EstadoAtualVeiculo estado) {
         if (estado == null) {
             throw new IllegalArgumentException("Estado atual inválido. Não pode ser nulo.");
         }
@@ -63,8 +70,8 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         return this.valorDesbloqueio;
     }
 
-    public void setValorDesbloqueio(double valorDesbloqueio){
-        if(valorDesbloqueio < 0){
+    public void setValorDesbloqueio(double valorDesbloqueio) {
+        if (valorDesbloqueio < 0) {
             throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
         }
         this.valorDesbloqueio = valorDesbloqueio;
@@ -74,18 +81,18 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         return this.valorPorMinuto;
     }
 
-    public void setValorPorMinuto(double valorPorMinuto){
-        if(valorPorMinuto < 0){
+    public void setValorPorMinuto(double valorPorMinuto) {
+        if (valorPorMinuto < 0) {
             throw new IllegalArgumentException("Valor desbloqueio inválido. Deve ser maior que zero.");
         }
         this.valorPorMinuto = valorPorMinuto;
     }
 
-    public Estacao getEstacao(){
+    public Estacao getEstacao() {
         return this.estacao;
     }
 
-    private void setEstacao(Estacao estacao){
+    private void setEstacao(Estacao estacao) {
         if (estacao == null && estadoAtual != EstadoAtualVeiculo.EM_VIAGEM) {
             throw new IllegalArgumentException("Um veículo fora de viagem deve estar associado a uma estação.");
         }
@@ -93,27 +100,26 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
     }
 
     public void validarLiberarParaViagem() throws ProblemaViagemException {
-        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+        if (getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL) {
             throw new VeiculoIndisponivelException();
         }
     }
 
-    public void liberarParaViagem() throws ProblemaViagemException{
+    public void liberarParaViagem() throws ProblemaViagemException {
         validarLiberarParaViagem();
         setEstadoAtual(EstadoAtualVeiculo.EM_VIAGEM);
         this.estacao = null;
     }
 
-    public void validarRetornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{
-        if(getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM){
+    public void validarRetornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException {
+        if (getEstadoAtual() != EstadoAtualVeiculo.EM_VIAGEM) {
             throw new VeiculoNaoEmViagemException();
-        }
-        else if(estacao.isLotada()){
+        } else if (estacao.isLotada()) {
             throw new EstacaoLotadaException(estacao.getNome(), estacao.getLimiteVagas());
         }
     }
 
-    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException{ 
+    public void retornarViagem(Estacao estacao) throws VeiculoNaoEmViagemException, EstacaoLotadaException {
         validarRetornarViagem(estacao);
         setEstacao(estacao);
         setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
@@ -132,20 +138,36 @@ public abstract class Veiculo extends Salvavel implements Manutensivel {
         }
         return calcularValorPorTempoDeUso(minutos) + getValorDesbloqueio();
     }
-    
-    @Override 
-    public void enviarParaManutencao() throws VeiculoEmUsoException{
-        if(getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL){
+
+    @Override
+    public void enviarParaManutencao(Administrador administrador) throws VeiculoEmUsoException {
+        enviarParaManutencao(administrador, TipoOperacaoManutensivel.ENVIAR_MANUTENCAO);
+    }
+
+    protected void enviarParaManutencao(Administrador administrador, TipoOperacaoManutensivel tipoOperacao) throws VeiculoEmUsoException {
+        if (getEstadoAtual() != EstadoAtualVeiculo.DISPONIVEL) {
             throw new VeiculoEmUsoException();
         }
+
+        registrarOperacaoManutencao(administrador, tipoOperacao);
         setEstadoAtual(EstadoAtualVeiculo.EM_MANUTENCAO);
     }
 
-    @Override 
-    public void retornarManutencao() throws VeiculoNaoEmManutencaoException{
-        if(getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO){
+    private void registrarOperacaoManutencao(Administrador administrador, TipoOperacaoManutensivel tipoOperacao) {
+        var operacao = OperacaoManutensivel.criarOperacaoManutensivel(this, tipoOperacao, administrador);
+        try {
+            OperacaoManutensivelRepository.getInstance().insert(operacao);
+        } catch (IOException e) {
+            throw new IllegalStateException("Não foi possível registrar a operação de manutenção.", e);
+        }
+    }
+
+    @Override
+    public void retornarManutencao(Administrador administrador) throws VeiculoNaoEmManutencaoException {
+        if (getEstadoAtual() != EstadoAtualVeiculo.EM_MANUTENCAO) {
             throw new VeiculoNaoEmManutencaoException();
         }
+        registrarOperacaoManutencao(administrador, TipoOperacaoManutensivel.RETORNAR_MANUTENCAO);
         setEstadoAtual(EstadoAtualVeiculo.DISPONIVEL);
     }
 

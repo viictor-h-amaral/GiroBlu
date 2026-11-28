@@ -1,6 +1,7 @@
 package model;
 
 import auxiliares.EstadoAtualVeiculo;
+import auxiliares.TipoOperacaoManutensivel;
 import exceptions.BateriaInsuficienteException;
 import exceptions.EstacaoLotadaException;
 import exceptions.ProblemaViagemException;
@@ -35,7 +36,7 @@ public abstract class VeiculoEletrico extends Veiculo{
     }
 
     public void recarregarBateria(Administrador administrador) throws VeiculoEmUsoException{
-        enviarParaManutencao();
+        enviarParaManutencao(administrador, TipoOperacaoManutensivel.CARREGAR_BATERIA);
         setBateria(100);
     }
 
