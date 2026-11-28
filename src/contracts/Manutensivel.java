@@ -2,10 +2,11 @@ package contracts;
 
 import exceptions.VeiculoEmUsoException;
 import exceptions.VeiculoNaoEmManutencaoException;
+import model.Administrador;
 
 public interface Manutensivel {
 
-    void enviarParaManutencao() throws VeiculoEmUsoException;
-    void retornarManutencao() throws VeiculoNaoEmManutencaoException;
+    void enviarParaManutencao(Administrador administrador) throws VeiculoEmUsoException;
+    void retornarManutencao(Administrador administrador) throws VeiculoNaoEmManutencaoException;
 
 }

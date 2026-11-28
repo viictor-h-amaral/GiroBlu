@@ -113,12 +113,12 @@ public class Estacao extends Salvavel {
         veiculos.remove(veiculo);
     }
 
-    public void enviarVeiculosParaManutencao(ArrayList<Manutensivel> manutensiveis) throws VeiculoEmUsoException {
+    public void enviarVeiculosParaManutencao(ArrayList<Manutensivel> manutensiveis, Administrador administrador) throws VeiculoEmUsoException {
         ArrayList<String> erros = new ArrayList<>();
 
         for (Manutensivel manutensivel : manutensiveis) {
             try {
-                manutensivel.enviarParaManutencao();
+                manutensivel.enviarParaManutencao(administrador);
             } catch (Exception e) {
                 if(manutensivel instanceof Veiculo){
                     Veiculo veiculo = (Veiculo) manutensivel;
